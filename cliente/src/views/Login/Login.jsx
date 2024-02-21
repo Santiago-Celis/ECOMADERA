@@ -1,7 +1,17 @@
 import './Login.css'
 import logo from '../../Flecha.png'
+import { useState } from 'react';
 
 export default function Login() {
+
+  const [password, setPassword] = useState('')
+  const [correo, setCorreo] = useState('')
+
+  const handleLogin = (e) =>{
+    e.preventDefault();
+    console.log('holis');
+  }
+
   return (
     <div>
       <div className='contenedor'>
@@ -20,7 +30,7 @@ export default function Login() {
             </div>
 
             
-            <button type='submit'><img src={logo} alt='flecha' /></button>
+            <button type='submit' onClick={handleLogin} ><img src={logo} alt='flecha' /></button>
         </form>
         </div>
       </div>
