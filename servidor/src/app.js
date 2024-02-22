@@ -1,22 +1,14 @@
-const express = require('express');
-const dotenv = require('dotenv')
-const cookieParser = require('cookie-parser')
+import express from 'express';
+import morgan from 'morgan';
+import authRoutes from './router/auth.routes.js'
+import cookieParser from 'cookie-parser';
+import bodyParser from 'body-parser';
+
 const  app = express();
-
-const conexion = require('./database/db')
-
-
-app.get( '/', (req, res) => {
-    conexion()
-    res.send('Hello World!')
-})
-
-//seteo de cookies
-app.use(cookieParser)
-
-
-
-app.listen(3000, ()=>{
-    console.log('SERVIDOR CORRIENDO EN http://localhost:3000');
-})
-
+app.use(express.json());
+app.use(cookieParser());
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+app.use("/api", authRoutes)
+// 
+export default app;
