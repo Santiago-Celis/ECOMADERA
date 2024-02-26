@@ -1,71 +1,93 @@
-/*  import { conexion } from '../database/db.js' */
- import bcrypt from 'bcryptjs'
- import { createTokenAccess } from '../libs/jwt.js';
+import { createTokenAccess } from "../libs/jwt.js";
+import { User } from "../models/User.js";
+import bcrypt from 'bcryptjs'
 
- export const register = async (req, res) => {
-     const {name, email, password, phone} = req.body;
 
-     /* console.log(name, email, password, phone);
-     res.send('Registrando') */
-     try {
-         const passwordHash = await bcrypt.hash(password, 10)
+export const register = async (req, res) => {
+    const { name,  email, password, phone } = req.body;
+
+    try {
+        const passwordHash = bcrypt.hashSync(password, 8);
         
-        const nuevoUsuario = {
+        const newUser = User.create({
             name,
-             email,
-            password:passwordHash,
+            email,
+            password: passwordHash,
             phone
-        }
-
-         const UsuarioSaved = await conexion.query('INSERT INTO user SET ?', {name:nuevoUsuario.name, email:nuevoUsuario.email, password:nuevoUsuario.password, phone:nuevoUsuario.phone});
-         const token = await createTokenAccess({ id: UsuarioSaved._id });
-         res.cookie('token', token)
-
-         return res.status(201).json({
-             id: UsuarioSaved._id,
-             name: UsuarioSaved.name,
-             email: UsuarioSaved.email,
-
-         })
-
-     } catch (error) {
-         res.status(500).json({ message: error.message})
-     }
- };
-
-// Verificar si el usuario existe en la base de datos
- /* const userExist = async (email) =>{
-    const conn = await conexion();
-    let existEmail = await conn.query("SELECT * FROM users WHERE email=?", [email]);
-    conn.close()
-    return existEmail[0] ? true : false ;
- } */
-
- export const login = async (req, res) => {
-     const { email, password } = req.body;
-
-     /* console.log(name, email, password, phone);
-     res.send('Registrando') */
-     try {
-
-         const UserFound = await conexion.query('SELECT * FROM users WHERE email=?', [email]);
-         if(!UserFound) return res.status(400).json({ message : "No se ha encontrado al ususario" })
+        });
+        const userSaved = await  (await newUser).save();
         
-        const isMatch = await bcrypt.compare(password, UserFound.password);
-         if(!isMatch) return res.status(402).json({ message: "Algo esta pasando"})
+        const token = createTokenAccess({ id: userSaved.id })
+        res.cookie('token', token)
+        res.status(200);
+        return res.send({user: userSaved});
+        
+        /* return res.status(201).json(userSaved._id); */
 
-
-         const token = await createTokenAccess({ id: UsuarioSaved._id });
-         res.cookie('token', token)
-
-        return res.status(201).json({
-             id: UserFound._id,
-            name: UserFound.name,
-            email: UserFound.email,
-
-         })
-
-     } catch (error) {
-         res.status(500).json({ message: error.message})
-     }
+    } catch (error) {
+        res.status(500).json({
+            message: error.message
+        })
+    }
 };
+
+export const login = async (req, res) => {
+    // Get the user's credentials from the request body
+    const { email, password } = req.body;
+    
+    try {
+        
+        const userFound = await User.findOne({ email });
+        /* bcrypt.compare(password, userFound.password)
+        .then(result => result).catch(err => {throw new Error(err)}); */
+
+        User.prototype.isValidPassword = function( password ) {
+            return bcrypt.compare(password, userFound.password)
+            .then(result => result)
+            .catch(err => {throw new Error(err)} );
+        }
+        if(!userFound) return res.status(500).json({ message: "ocurrio un error" })
+
+        const token = await createTokenAccess({ id: userFound.id })
+                res.cookie('token', token)
+                res.status(200).json({
+                    id: userFound.id,
+                    name: userFound.name,
+                    email: userFound.email,
+                    token
+                    
+                });
+
+        if(!userFound) return res.status(404).json({ message: "No se ha encontrado el usuario" });
+
+        /* const isMatch = await User.findOne({ })
+        if(!isMatch) return res.status(401).json({ message: "Contraseña incorrecta"}) */
+
+        
+
+    } catch (error) {
+        res.status(500).json({ message: error.message})
+    }
+    
+}
+
+export const logout = async (req, res) => {
+    res.cookie('token', '', {
+        expires : new Date(0),
+    });
+    return res.status(200).json({ message: "cierre de sesion exitoso" })
+}
+
+export const profile = async (req, res) => {
+    
+    const userFound = await User.findByPk(req.user.id);
+    if(!userFound) return res.status(400).json({ message: "El usuario no se ha encontrado " })
+
+    console.log(userFound);
+
+    res.status(200).json({
+        id: userFound.id,
+        name: userFound.name,
+        email: userFound.email,
+    });
+}
