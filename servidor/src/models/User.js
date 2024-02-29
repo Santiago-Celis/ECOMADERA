@@ -1,7 +1,7 @@
 import { Sequelize, Model, DataTypes } from "sequelize";
 import { sequelize } from '../database/db.js'
 import bcrypt from 'bcryptjs'
-
+import { Roles } from "./Rol.js";
 
 
 export class Address extends Model {
@@ -15,7 +15,7 @@ export class Address extends Model {
 
     static associate(models) {
         Address.hasMany( models.User, {
-            foreignKey: 'Id',
+            foreignKey: 'id',
             targetKey: 'UserId'
         })
     }
@@ -85,7 +85,16 @@ CreditCard.init ({
 }, {sequelize, tableName:"creditcard"})
 
 
-export class User extends Model {}
+export class User extends Model {
+    
+    static associate(models) {
+        User.hasOne(models.Roles, {
+            foreignKey: 'Id',
+            targetKey: 'rol'
+        })
+    }
+
+}
 User.init({
     id: {
         type:DataTypes.INTEGER,
@@ -97,19 +106,21 @@ User.init({
     email: DataTypes.STRING,
     password: DataTypes.STRING,
     phone: DataTypes.INTEGER(10),
+    rol: {
+        type: DataTypes.INTEGER,
+        defaultValue: 1,
+        references: {
+            model: 'roles',
+            key: 'Id'
+        }
+    }
 },{sequelize, modelName: 'user'});
 
 
-const saltRounds = 10;
+/* const saltRounds = 8;
 User.beforeCreate((user, options) => {
-    return bcrypt.hash(user.password, saltRounds)
-    .then(hash => {
-        user.password = hash
-    })
-    .catch(err => {
-        throw new Error(err);
-    });
-});
+    return bcryptjs.hash(user.password, saltRounds);
+}); */
 
 
 

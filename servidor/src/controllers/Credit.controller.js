@@ -5,7 +5,7 @@ export const createCard = async ( req, res ) => {
     const { Titular, CardNumber, CVV, ExpirationDate, UserId } = req.body
 
     try {
-        const newCard = await  CreditCard.create({
+        const newCard = await CreditCard.create({
             Titular,
             CardNumber,
             CVV,

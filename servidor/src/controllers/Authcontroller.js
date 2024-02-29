@@ -1,26 +1,30 @@
 import { createTokenAccess } from "../libs/jwt.js";
 import { User } from "../models/User.js";
-import bcrypt from 'bcryptjs'
+import bcryptjs from 'bcryptjs'
 
 
 export const register = async (req, res) => {
-    const { name,  email, password, phone } = req.body;
+    const { name,  email, password, phone, rol } = req.body;
 
     try {
-        const passwordHash = bcrypt.hashSync(password, 8);
+
+        const saltRounds = 10;
+        const passwordHash = await bcryptjs.hash(password, saltRounds);
         
-        const newUser = User.create({
+        const newUser = await User.create({
             name,
             email,
             password: passwordHash,
-            phone
+            phone,
+            rol
         });
-        const userSaved = await  (await newUser).save();
+
+        const userSaved = await newUser;
         
         const token = createTokenAccess({ id: userSaved.id })
         res.cookie('token', token)
         res.status(200);
-        return res.send({user: userSaved});
+        return res.send(userSaved);
         
         /* return res.status(201).json(userSaved._id); */
 
@@ -33,22 +37,20 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     // Get the user's credentials from the request body
-    const { email, password } = req.body;
+    const { correo, contraseña } = req.body;
     
+
     try {
         
-        const userFound = await User.findOne({ email });
-        /* bcrypt.compare(password, userFound.password)
-        .then(result => result).catch(err => {throw new Error(err)}); */
+        const userFound = await User.findOne({
+            where:{
+                email: correo
+            }
+        });
+        const comparacion = await bcryptjs.compare(contraseña, userFound.password)
 
-        User.prototype.isValidPassword = function( password ) {
-            return bcrypt.compare(password, userFound.password)
-            .then(result => result)
-            .catch(err => {throw new Error(err)} );
-        }
-        if(!userFound) return res.status(500).json({ message: "ocurrio un error" })
-
-        const token = await createTokenAccess({ id: userFound.id })
+        if(comparacion){
+            const token = await createTokenAccess({ id: userFound.id })
                 res.cookie('token', token)
                 res.status(200).json({
                     id: userFound.id,
@@ -57,14 +59,11 @@ export const login = async (req, res) => {
                     token
                     
                 });
-
-        if(!userFound) return res.status(404).json({ message: "No se ha encontrado el usuario" });
-
-        /* const isMatch = await User.findOne({ })
-        if(!isMatch) return res.status(401).json({ message: "Contraseña incorrecta"}) */
-
+        }else{
+            res.status(401).json({msg:"Contraseña incorrecta"})
+        }
         
-
+        if(!userFound) return res.status(404).json({ message: "No se ha encontrado el usuario" });
     } catch (error) {
         res.status(500).json({ message: error.message})
     }
