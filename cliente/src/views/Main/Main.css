@@ -1,3 +1,5 @@
+
+
 .main{
     background-color: #262626;
 }
@@ -93,3 +95,23 @@
     width: 50%;
 }
 
+.Card{
+    background-image: url('../../imgs/muebleC.jpg');
+    background-size: cover;
+    width: 30em;
+    height: 15em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.muebles{
+    display: flex ;
+    justify-content: space-evenly;
+    
+    padding: 5em 0;
+}
+.transparente{
+    background-color: rgba(36, 39, 39, 0.452);
+    height: 12em;
+    
+}

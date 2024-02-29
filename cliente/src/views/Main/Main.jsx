@@ -9,6 +9,7 @@ import Slider3 from '../../imgs/Slider3.jpg'
 import Carpintero from '../../imgs/carpinteroIcon.png'
 import arbol from '../../imgs/arbolIcon.png'
 import camion from '../../imgs/entrega.png'
+import mueble from '../../imgs/muebleC.jpg'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Cards from '../../components/CardSlider/Cards'
@@ -61,7 +62,39 @@ function Main() {
             
         </div>
 
+        <div className="Separador">
+                <p>CATEGORIAS</p>
+            </div>
 
+        <div className='muebles'>
+            <div className='Card'>
+                <div className="transparente">
+                    {/* <img className="img" src={mueble} alt="" /> */}
+                    <p>MUEBLES PARA HABITACIÓN</p>
+                    <button>Ver muebles</button>
+                </div>
+
+            </div>
+            <div className='Card'>
+                <div className="transparente">
+                    {/* <img className="img" src={mueble} alt="" /> */}
+                    <p>MUEBLES PARA HABITACIÓN</p>
+                    <button>Ver muebles</button>
+                </div>
+
+            </div>
+            <div className='Card'>
+                <div className="transparente">
+                    {/* <img className="img" src={mueble} alt="" /> */}
+                    <p>MUEBLES PARA HABITACIÓN</p>
+                    <button>Ver muebles</button>
+                </div>
+
+            </div>
+
+
+
+        </div>
 
     </div>
   )
