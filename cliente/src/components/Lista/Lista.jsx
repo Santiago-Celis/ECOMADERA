@@ -1,7 +1,27 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './Lista.module.css';
+import axios from 'axios';
 
 function Lista() {
+
+  const [data, setData] = useState([]);
+
+  const url = 'http://localhost:3001/products/products'
+
+  const getData = async () => {
+    await axios.get(url).then((response) => {
+      const data = response.data
+      console.log(data);
+      setData(data.data)
+    })
+  }
+
+  useEffect(() => {
+    getData()
+  },[])
+
+  console.log(data)
+
   return (
     <div>
       <div className={styles.tabla}>

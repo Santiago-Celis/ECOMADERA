@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import styles from './Formulario.modules.css'
 import { useForm } from 'react-hook-form'
 import { useProduct } from '../../context/ProductContext';
@@ -12,6 +12,7 @@ function Formulario() {
     const onSubmit = handleSubmit((data) => {
         createProduct(data);
     })
+
 
   return (
     <div>
