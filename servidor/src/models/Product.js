@@ -61,8 +61,7 @@ Product.init({
         references :{
             model:"Category",
             key:"id"
-    }
-    },
+    }},
     price:{
         type: DataTypes.INTEGER(10),
         allowNull: false
@@ -70,5 +69,9 @@ Product.init({
     imagenURL: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    inCart:{
+        type: DataTypes.BOOLEAN, 
+        defaultValue: false
     }
 },{sequelize, modelName: 'product'})

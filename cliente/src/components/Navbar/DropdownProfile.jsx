@@ -1,10 +1,10 @@
 import React from 'react'
-import '../../styles/navbar.css'
+import styles from '../../styles/navbar.module.css'
 
 
 function DropdownProfile() {
   return (
-      <div className='Usuario'>
+      <div className={styles.Usuario}>
             <ul>
               <li>Perfil</li>
               <li>Carrito</li>

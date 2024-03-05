@@ -1,5 +1,5 @@
 import React from 'react'
-import './Cards.css'
+import styles from'./Cards.module.css'
 
 import Mueble from '../../imgs/Mueble1.jpg'
 
@@ -19,40 +19,40 @@ function Cards() {
             >
 
             <SwiperSlide>
-                <div className="Carta">
-                    <img src={Mueble} alt="" className='ImagenCarta'/>
+                <div className={styles.Carta}>
+                    <img src={Mueble} alt="" className={styles.ImagenCarta}/>
                     <h2>MUEBLE COMODO</h2>
                     <h3>$150.000</h3>
                     <a href="#">Ver mas</a>
                 </div>
             </SwiperSlide>
             <SwiperSlide>
-                <div className="Carta">
-                    <img src={Mueble} alt="" className='ImagenCarta'/>
+                <div className={styles.Carta}>
+                    <img src={Mueble} alt="" className={styles.ImagenCarta}/>
                     <h2>MUEBLE COMODO</h2>
                     <h3>$150.000</h3>
                     <a href="#">Ver mas</a>
                 </div>
             </SwiperSlide>
             <SwiperSlide>
-                <div className="Carta">
-                    <img src={Mueble} alt="" className='ImagenCarta'/>
+                <div className={styles.Carta}>
+                    <img src={Mueble} alt="" className={styles.ImagenCarta}/>
                     <h2>MUEBLE COMODO</h2>
                     <h3>$150.000</h3>
                     <a href="#">Ver mas</a>
                 </div>
             </SwiperSlide>
             <SwiperSlide>
-                <div className="Carta">
-                    <img src={Mueble} alt="" className='ImagenCarta'/>
+                <div className={styles.Carta}>
+                    <img src={Mueble} alt="" className={styles.ImagenCarta}/>
                     <h2>MUEBLE COMODO</h2>
                     <h3>$150.000</h3>
                     <a href="#">Ver mas</a>
                 </div>
             </SwiperSlide>
             <SwiperSlide>
-                <div className="Carta">
-                    <img src={Mueble} alt="" className='ImagenCarta'/>
+                <div className={styles.Carta}>
+                    <img src={Mueble} alt="" className={styles.ImagenCarta}/>
                     <h2>MUEBLE COMODO</h2>
                     <h3>$150.000</h3>
                     <a href="#">Ver mas</a>

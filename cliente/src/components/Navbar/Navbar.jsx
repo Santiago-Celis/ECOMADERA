@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import '../../styles/navbar.css'
+import styles from '../../styles/navbar.module.css'
 import DropdownProfile from './DropdownProfile'
 
 function Navbar() {
@@ -8,11 +8,11 @@ function Navbar() {
 
   return (
     <div>
-      <div className='General'>
+      <div className={styles.General}>
 
         <p>ECOMADERA</p>
 
-        <div className='Busqueda'>
+        <div className={styles.Busqueda}>
             <input type='text' placeholder='Buscar' />
 
             <ul>

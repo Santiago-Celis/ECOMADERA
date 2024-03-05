@@ -1,0 +1,21 @@
+.tabla{
+    width: 80%;
+    height: fit-content;
+    display: grid;
+    text-align: center;
+    padding: 10px;
+}
+
+.columna{
+    padding: 5px 30px;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.item{
+    padding: 10px;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;    
+}

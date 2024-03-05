@@ -48,7 +48,7 @@ export const getProduct = async (req, res) => {
 export const updateProduct = async ( req, res ) => {
     
     const { name, height, width, depth, price, description, categoryId} = req.body;
-    const imagenURL = req.file ? req.file.path : null;
+    const image = req.file ? req.file.path : null;
 
     const product = await Product.update({
         name,
@@ -58,7 +58,7 @@ export const updateProduct = async ( req, res ) => {
         price,
         description,
         categoryId,
-        imageUrl: imagenURL
+        imageUrl: image
     }, { where: { id: req.params.id }})
 
     console.log("El producto se ha actualizado de manera correcta");

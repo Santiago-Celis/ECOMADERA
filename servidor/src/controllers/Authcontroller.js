@@ -1,6 +1,6 @@
 import { createTokenAccess } from "../libs/jwt.js";
 import { User } from "../models/User.js";
-import bcryptjs from 'bcryptjs'
+import bcrypt from 'bcryptjs'
 
 
 export const register = async (req, res) => {
@@ -9,7 +9,7 @@ export const register = async (req, res) => {
     try {
 
         const saltRounds = 10;
-        const passwordHash = await bcryptjs.hash(password, saltRounds);
+        const passwordHash = await bcrypt.hash(password, saltRounds);
         
         const newUser = await User.create({
             name,
@@ -37,17 +37,13 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
     // Get the user's credentials from the request body
-    const { correo, contraseña } = req.body;
+    const { email, password } = req.body;
     
 
     try {
         
-        const userFound = await User.findOne({
-            where:{
-                email: correo
-            }
-        });
-        const comparacion = await bcryptjs.compare(contraseña, userFound.password)
+        const userFound = await User.findOne({email});
+        const comparacion = await bcrypt.compare(password, userFound.password)
 
         if(comparacion){
             const token = await createTokenAccess({ id: userFound.id })
