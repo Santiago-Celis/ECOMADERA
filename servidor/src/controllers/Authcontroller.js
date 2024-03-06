@@ -1,3 +1,4 @@
+import { where } from "sequelize";
 import { createTokenAccess } from "../libs/jwt.js";
 import { User } from "../models/User.js";
 import bcrypt from 'bcryptjs'
@@ -38,33 +39,36 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
     // Get the user's credentials from the request body
     const { email, password } = req.body;
-    
 
     try {
-        
-        const userFound = await User.findOne({email});
-        const comparacion = await bcrypt.compare(password, userFound.password)
+        // Find user by email using appropriate comparison operator
+        const userFound = await User.findOne({ email: email });
 
-        if(comparacion){
-            const token = await createTokenAccess({ id: userFound.id })
-                res.cookie('token', token)
-                res.status(200).json({
-                    id: userFound.id,
-                    name: userFound.name,
-                    email: userFound.email,
-                    token
-                    
-                });
-        }else{
-            res.status(401).json({msg:"Contraseña incorrecta"})
+        if (!userFound) {
+            return res.status(404).json({ message: "No se ha encontrado el usuario" });
         }
-        
-        if(!userFound) return res.status(404).json({ message: "No se ha encontrado el usuario" });
+
+        // Compare password using bcrypt
+        const comparacion = await bcrypt.compare(password, userFound.password);
+
+        if (comparacion) {
+            const token = await createTokenAccess({ id: userFound.id });
+            console.log(userFound.email);
+            res.cookie('token', token);
+            res.status(200).json({
+                id: userFound.id,
+                name: userFound.name,
+                email: userFound.email,
+                token,
+            });
+        } else {
+            res.status(401).json({ msg: "Contraseña incorrecta" });
+        }
     } catch (error) {
-        res.status(500).json({ message: error.message})
+        res.status(500).json({ message: error.message });
     }
-    
-}
+};
+
 
 export const logout = async (req, res) => {
     res.cookie('token', '', {
@@ -85,4 +89,10 @@ export const profile = async (req, res) => {
         name: userFound.name,
         email: userFound.email,
     });
+}
+
+export const users = async (req,res) => {
+    const users = await User.findAll();
+
+    res.status(200).json(users)
 }

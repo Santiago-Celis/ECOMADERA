@@ -1,4 +1,5 @@
 import { DataTypes, Model } from "sequelize";
+import { sequelize } from "../database/db.js";
 
 export class Cart extends Model {}
 Cart.init({
@@ -8,8 +9,7 @@ Cart.init({
     price: {type: DataTypes.INTEGER, allowNull: false}
 },{
     sequelize,
-    tableName:'Cart',
+    modelName:'Cart',
     timestamps:false,
-    
 })
 
