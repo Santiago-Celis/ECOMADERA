@@ -2,6 +2,7 @@ import React from 'react'
 import { useState } from 'react'
 import styles from './navbar.module.css'
 import Dropdown from './Dropdown'
+import TextField from '@mui/material/TextField'
 
 function Navbar() {
 
@@ -15,7 +16,12 @@ function Navbar() {
         <p>ECOMADERA</p>
 
         <div className={styles.Busqueda}>
-            <input type='text' placeholder='Buscar' />
+        <TextField fullWidth label="Buscar" id="fullWidth" size='small' sx={{
+          borderRadius: 1,
+          backgroundColor: 'grey',  //Cambiar variable de color
+          
+        }}
+        />
 
             <ul>
                 <li>Habitacion</li>

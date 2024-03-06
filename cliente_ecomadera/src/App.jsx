@@ -8,6 +8,7 @@ import Main from './views/Main/Main'
 import Profile from './views/Profile/Profile'
 import Register from './views/Register/Register'
 import Login from './views/Login/Login'
+import Products from './views/Products/Products'
 
 
 function App() {
@@ -22,9 +23,9 @@ function App() {
         <Route path='/Register' element={<Register/>}/>
         <Route path='/Login' element={<Login/>}/>
 
-        <Route path='/Profile/*' element={<Profile/>}>
-          
-        </Route>
+        <Route path='/Products' element={<Products/>}/>
+
+        <Route path='/Profile/*' element={<Profile/>}></Route>
       </Routes>
 
     </>

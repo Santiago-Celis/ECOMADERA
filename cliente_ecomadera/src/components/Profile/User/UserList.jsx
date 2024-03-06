@@ -11,10 +11,10 @@ import axios from 'axios';
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
-export default function BasicTable() {
+export default function UserList() {
   const [data, setData] = useState([]);
 
-  const endPoint = 'http://localhost:3001/products/products';
+  const endPoint = 'http://localhost:3001/api/users';
 
   const getData = async () => {
     try {
@@ -32,8 +32,9 @@ export default function BasicTable() {
   const columns = [
     { id: 'id', label: 'ID', minWidth: 10 },
     { name: 'name', label: 'Nombre' },
-    { price: 'price', label: 'Precio' },
-    { description: 'description', label: 'Descripcion' },
+    { email: 'email', label: 'Correo' },
+    { phone: 'phone', label: 'Telefono' },
+    { rol: 'rol', label: 'RolId' },
   ];
 
   return (
@@ -62,9 +63,10 @@ export default function BasicTable() {
             <TableRow key={row.id}>
               <TableCell component="th" scope="row" align='center' className=''>{row.id}</TableCell>
               <TableCell align="center" >{row.name}</TableCell>
-              <TableCell align="center">{row.price}</TableCell>
-              <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center"> <AppRegistrationOutlinedIcon/> <DeleteOutlineOutlinedIcon/> </TableCell>
+              <TableCell align="center">{row.email}</TableCell>
+              <TableCell align="center">{row.phone}</TableCell>
+              <TableCell align="center">{row.rol}</TableCell>
+              <TableCell align="center"> <AppRegistrationOutlinedIcon /> <DeleteOutlineOutlinedIcon/> </TableCell>
             </TableRow>
           ))}
         </TableBody>

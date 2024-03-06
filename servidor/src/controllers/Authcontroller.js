@@ -42,7 +42,7 @@ export const login = async (req, res) => {
 
     try {
         // Find user by email using appropriate comparison operator
-        const userFound = await User.findOne({ email: email });
+        const userFound = await User.findOne({where: {email: email}});
 
         if (!userFound) {
             return res.status(404).json({ message: "No se ha encontrado el usuario" });

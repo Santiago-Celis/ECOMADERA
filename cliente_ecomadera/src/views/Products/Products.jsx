@@ -1,13 +1,15 @@
 import React from 'react'
-import Lista from '../../components/Profile/List/Lista'
-import { Link, NavLink, Route, Routes } from 'react-router-dom'
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
 import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText';
-import Divider from '@mui/material/Divider';
-import UserList from '../../components/Profile/User/UserList'
 
 const lista = {
     p: 0,
@@ -20,10 +22,9 @@ const lista = {
 };
 
 
-function Profile() {
+function Products() {
   return (
     <div>
-      
       <Box
         sx={{
             display: 'flex',
@@ -46,37 +47,48 @@ function Profile() {
           </ListItemButton>
         </ListItem>
 
-        <Link to={'users'}>
+        
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText primary="Usuarios" />
             </ListItemButton>
           </ListItem>
-        </Link>
+        
 
-        <Link to={'list'}>
           <ListItem disablePadding>
             <ListItemButton>
               <ListItemText primary="Productos" />
             </ListItemButton>
           </ListItem>
-        </Link>
+        
     </List>
+        
+    <Card sx={{ maxWidth: 345 }}>
+      <CardMedia
+        component="img"
+        alt="green iguana"
+        height="140"
+        image="/static/images/cards/contemplative-reptile.jpg"
+      />
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+          Lizard
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          Lizards are a widespread group of squamate reptiles, with over 6,000
+          species, ranging across all continents except Antarctica
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small">Share</Button>
+        <Button size="small">Learn More</Button>
+      </CardActions>
+    </Card>
 
-
-    <Routes>
-        <Route path='users' element={<UserList/>}/>
-        <Route path='list' element={<Lista/>} />
-    </Routes>
-
-      </Box>
-
-
-
-
-
+    </Box>
+    
     </div>
   )
 }
 
-export default Profile
+export default Products
