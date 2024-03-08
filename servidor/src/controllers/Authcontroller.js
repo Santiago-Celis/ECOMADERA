@@ -2,6 +2,7 @@ import { where } from "sequelize";
 import { createTokenAccess } from "../libs/jwt.js";
 import { User } from "../models/User.js";
 import bcrypt from 'bcryptjs'
+import { tokenSign } from "../middlewares/generateToken.js";
 
 
 export const register = async (req, res) => {
@@ -22,10 +23,19 @@ export const register = async (req, res) => {
 
         const userSaved = await newUser;
         
-        const token = createTokenAccess({ id: userSaved.id })
+
+        const token = await tokenSign(userSaved)
+
+        res.cookie('token', token)
+        return res.send({
+            data: userSaved,
+            token
+        });
+
+        /* const token = createTokenAccess({ id: userSaved.id })
         res.cookie('token', token)
         res.status(200);
-        return res.send(userSaved);
+        return res.send(userSaved); */
         
         /* return res.status(201).json(userSaved._id); */
 
@@ -52,15 +62,15 @@ export const login = async (req, res) => {
         const comparacion = await bcrypt.compare(password, userFound.password);
 
         if (comparacion) {
-            const token = await createTokenAccess({ id: userFound.id });
-            console.log(userFound.email);
+
+            const token = await tokenSign(userFound)
+
             res.cookie('token', token);
-            res.status(200).json({
-                id: userFound.id,
-                name: userFound.name,
-                email: userFound.email,
-                token,
-            });
+            res.send({
+                data: userFound,
+                token
+            })
+
         } else {
             res.status(401).json({ msg: "Contraseña incorrecta" });
         }
@@ -79,6 +89,7 @@ export const logout = async (req, res) => {
 
 export const profile = async (req, res) => {
     
+
     const userFound = await User.findByPk(req.user.id);
     if(!userFound) return res.status(400).json({ message: "El usuario no se ha encontrado " })
 
@@ -94,5 +105,19 @@ export const profile = async (req, res) => {
 export const users = async (req,res) => {
     const users = await User.findAll();
 
-    res.status(200).json(users)
+    res.json({users})
+}
+
+export const deleteUsers = async (req, res) => {
+    
+        const user = await User.destroy({
+            where:{
+                id: req.params.id
+            }
+        })
+
+        if(!user) return res.status(500).json({ message: "no se encontro al usuario" })
+        res.status(200).json({ message: "El usuario se ha eliminado con exito" })
+        
+    
 }

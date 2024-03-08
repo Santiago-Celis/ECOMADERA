@@ -1,8 +1,25 @@
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
+import { verifyToken } from "./generateToken.js";
 
-export const requiredAuth = (req, res, next) => {
-    console.log(req.headers);
+
+export const requiredAuth = async (req, res, next) => {
+    try {
+
+        const token = await req.cookies.token
+        const tokenData = await verifyToken(token)
+        console.log(tokenData);
+        if (tokenData.id){
+            req.user = tokenData
+            next()
+        } else {
+            res.status(409).send({ error: 'You shall not pass!!' })
+        }
+    } catch (error) {
+        console.log(error);
+    }
+    
+    /* console.log(req.headers);
     const { token } = req.cookies;
     console.log(token);
     if(!token)
@@ -13,5 +30,5 @@ export const requiredAuth = (req, res, next) => {
 
         req.user = user;
         next();
-    })
+    }) */
 }

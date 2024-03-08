@@ -20,6 +20,7 @@ function App() {
 
       <Routes>
         <Route path='/' element={<Main/>}/>
+        <Route path='/Main' element={<Main/>}/>
         <Route path='/Register' element={<Register/>}/>
         <Route path='/Login' element={<Login/>}/>
 

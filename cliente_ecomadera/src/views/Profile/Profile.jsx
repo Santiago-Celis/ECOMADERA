@@ -65,6 +65,7 @@ function Profile() {
 
 
     <Routes>
+        <Route path='' element={<Lista/>}/>
         <Route path='users' element={<UserList/>}/>
         <Route path='list' element={<Lista/>} />
     </Routes>

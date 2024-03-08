@@ -6,6 +6,9 @@ import { useState } from 'react';
 
 export default function Login() {
 
+  const endpoint = 'http://localhost:3001/api/register'
+
+
   const [password, setPassword] = useState('')
   const [correo, setCorreo] = useState('')
 

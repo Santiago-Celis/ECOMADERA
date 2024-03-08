@@ -12,14 +12,14 @@ import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutl
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 
 export default function UserList() {
-  const [data, setData] = useState([]);
+  const [user, setUser] = useState([]);
 
   const endPoint = 'http://localhost:3001/api/users';
 
   const getData = async () => {
     try {
       const response = await axios.get(endPoint);
-      setData(response.data);
+      setUser(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -59,16 +59,9 @@ export default function UserList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row" align='center' className=''>{row.id}</TableCell>
-              <TableCell align="center" >{row.name}</TableCell>
-              <TableCell align="center">{row.email}</TableCell>
-              <TableCell align="center">{row.phone}</TableCell>
-              <TableCell align="center">{row.rol}</TableCell>
-              <TableCell align="center"> <AppRegistrationOutlinedIcon /> <DeleteOutlineOutlinedIcon/> </TableCell>
-            </TableRow>
-          ))}
+          {/* {data.map((row) => (
+            <TableCell key={data.id} align='center'>{row.id}</TableCell>
+          ))} */}
         </TableBody>
       </Table>
     </TableContainer>

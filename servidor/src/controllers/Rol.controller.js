@@ -23,7 +23,7 @@ export const createRol = async (req, res) => {
 
 export const getRoles = async (req, res) => {
     try {
-        const roles = Roles.findAll()
+        const roles = await Roles.findAll()
         res.status(201).json(roles)
     } catch (error) {
         res.status(500).json({ message: error.message });
