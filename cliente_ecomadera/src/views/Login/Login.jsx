@@ -35,7 +35,7 @@ export default function Login() {
             </div>
 
             
-            <button type='submit' onClick={handleLogin} ><FaArrowCircleRight/></button>
+            <button type='submit' onClick={handleLogin} ><FaArrowCircleRight style={{ fontSize: '100' }}/></button>
         </form>
         </div>
       </div>

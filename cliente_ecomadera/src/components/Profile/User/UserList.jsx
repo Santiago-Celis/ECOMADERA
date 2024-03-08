@@ -1,4 +1,4 @@
-import * as React from 'react';
+
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,18 +8,18 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+/* import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined'; */
 
 export default function UserList() {
-  const [user, setUser] = useState([]);
+  const [data, setData] = useState([]);
 
   const endPoint = 'http://localhost:3001/api/users';
 
   const getData = async () => {
     try {
       const response = await axios.get(endPoint);
-      setUser(response.data);
+      setData(response.data);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -59,9 +59,9 @@ export default function UserList() {
           </TableRow>
         </TableHead>
         <TableBody>
-          {/* {data.map((row) => (
+         {data.map((row) => (
             <TableCell key={data.id} align='center'>{row.id}</TableCell>
-          ))} */}
+          ))} 
         </TableBody>
       </Table>
     </TableContainer>

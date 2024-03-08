@@ -10,15 +10,12 @@
     display: flex;
     height: 40%;
     justify-content: center;
-    /* align-items: end; */
+    align-items: end;
 }
 
 .contenedor .Titulo{
-    display: inline-block;
     height: 10vw;
     width: 30vh;
-    position: absolute;
-    left: 14vh;
     font-size: 9vh;
     font-family: "Koulen", sans-serif;
     line-height: 70px;
@@ -60,19 +57,12 @@ span{
 
 button{
     display: flex;
-    width: 12%;
-    height: 10vh;
+    width: 10%;
+    height: 8vh;
     border-radius: 100%;
     justify-content: center;
     align-items: center;
     border: none;
     margin: 5vh;
     background-color: #E9E9E9;
-}
-
-button img{
-    max-width: 60px;
-    position: relative;
-    left: 5px;
-
 }

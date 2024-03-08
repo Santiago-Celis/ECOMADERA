@@ -15,9 +15,11 @@ import { Modal as BaseModal } from '@mui/base/Modal';
 import { styled, css } from '@mui/system';
 import  PropTypes  from 'prop-types';
 import clsx from 'clsx';
+import TextField from '@mui/material/TextField';
+import MenuItem from '@mui/material/MenuItem';
 
 
-
+import mesa from '../../assets/mesa.jpg';
 function Products() {
 
   const [open, setOpen] = React.useState(false);
@@ -35,16 +37,42 @@ function Products() {
         onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
       >
-        <ModalContent style={{ display: 'flex'}}>
-          <div className="">
-            <img src="" alt="" />
-          </div>
-
-          <h1>Product Name</h1>
-          <p>Description of the product.</p>
-          <h3>Price</h3>
+        <ModalContent style={{ 
+          display: 'flex',
+          flexDirection: 'row',
+          width:'120vh',
+          padding: '5em',
+          justifyContent: 'center',
+          gap: 150
+          }}>
 
           
+            <img src={mesa} alt="" />
+          
+
+          <div className="">
+            
+          <h1>Product Name</h1>
+          <p>Description of the product.</p>
+          <h3>Price: 5000$</h3>
+
+          <TextField
+            select
+            label="Cantidad"
+            defaultValue={1}
+            sx={{ width: 120 }}
+            variant="outlined"
+            helperText="Elige una cantidad"
+          >
+            <MenuItem value={1}>1</MenuItem>
+            <MenuItem value={2}>2</MenuItem>
+            <MenuItem value={3}>3</MenuItem>
+            
+          </TextField>
+          
+            <Button variant='contained' style={{ background: red[400] }} ></Button>
+
+            </div>
         </ModalContent>
 
 
@@ -63,15 +91,13 @@ function Products() {
             justifyContent: 'space-evenly',
             alignItems: 'center',
             height: '60em',
-            gap: 30
+            gap: 10
         }}>
 
 <Box
         sx={{
             display: 'flex',
-            border: '1px solid',
-            borderColor: 'divider',
-            width: '100%',
+            width: '50%',
             borderRadius: 2,
             bgcolor: 'background.paper',
             color: 'text.secondary',
@@ -111,11 +137,11 @@ function Products() {
             display: 'flex',
             flexGrow: 1,
             justifyContent: 'center',
-            border: '1px solid',
             borderRadius: 2,
             color: 'text.secondary',
             height: '100%',
-            padding: '0px 100px',
+            padding: '0px 0em',
+            width: '100%',
         }} >
 
       <Grid container spacing={{ xs: 5, md: -15 }} columns={{ xs: 4, sm: 8, md: 12 }} >
@@ -201,6 +227,13 @@ const grey = {
   800: '#303740',
   900: '#1C2025',
 };
+
+const red = {
+  100 : '#DC5A6D',
+  200: '#C93B50',
+  300: '#BB1A32',
+  400: '#B3001B'
+}
 
 const TriggerButton = styled('button')(
   ({ theme }) => css`

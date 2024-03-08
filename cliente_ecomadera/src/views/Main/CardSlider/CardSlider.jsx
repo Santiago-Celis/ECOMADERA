@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from'./CardSlider.module.css'
 
 import Mueble from '../../../assets/Main/Mueble1.jpg'
@@ -12,7 +11,7 @@ function Cards() {
     <div>
       <Swiper
             modules={[EffectCards]}
-            spaceBetween={50}
+            spaceBetween={0}
             slidesPerView={3}
             onSlideChange={() => console.log('slide change')}
             onSwiper={(swiper) => console.log(swiper)}

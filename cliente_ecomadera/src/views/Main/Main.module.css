@@ -7,6 +7,19 @@
     height: 45rem;
 }
 
+/* .nose{
+    position: relative;  
+}
+
+.fondito{
+    width: 100%;
+    height: 100%;
+    background-color: #38383886;
+    border: 1px solid red;
+    z-index: 3;
+    position: absolute;
+} */
+
 .texto{
     background-color: rgba(0, 0, 0, 0.664);
     width: 500px;

@@ -1,4 +1,3 @@
-import React from 'react'
 
 import 'swiper/css'
 import styles from './Main.module.css'
@@ -25,16 +24,27 @@ function Main() {
             <h1>HOLA BUENAS</h1>
             <p>Aca encontraras todos los muebles que necesitas para tu hogar.</p>
         </div>
+
+        <div className={styles.nose}>
+
+            <div className={styles.fondito}>
+            </div>
         <Swiper
-        spaceBetween={50}
+        spaceBetween={0}
         slidesPerView={1}
         onSlideChange={() => console.log('slide change')}
         onSwiper={(swiper) => console.log(swiper)}
+        loop={true}
+        
         >
             <SwiperSlide><img src={Slider1} alt="" className={styles.Slider}/></SwiperSlide>
             <SwiperSlide><img src={Slider2} alt="" className={styles.Slider}/></SwiperSlide>
             <SwiperSlide><img src={Slider3} alt="" className={styles.Slider}/></SwiperSlide>
+            
+                
         </Swiper>
+        </div>
+        
         </div>
 
         <div className={styles.Caracteristicas}>
