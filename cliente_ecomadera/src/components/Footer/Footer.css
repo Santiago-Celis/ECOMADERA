@@ -1,0 +1,39 @@
+footer {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    background-color: #ebd396;
+    color: #111111;
+   
+  }
+  
+  .footer-left{
+    display: flex;
+    justify-content: center;
+  }
+  .footer-right {
+    display: flex;
+    align-items: center;
+    
+  }
+  
+  .social-icons {
+    display: flex;
+  }
+  
+  .social-icons i {
+    margin-right: 10px;
+  }
+  
+  .footer-center {
+    text-align: center;
+  }
+  
+  
+  
+ 

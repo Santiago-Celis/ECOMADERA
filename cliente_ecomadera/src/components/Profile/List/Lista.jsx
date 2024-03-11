@@ -29,7 +29,7 @@ export default function BasicTable() {
   }, []);
 
   const columns = [
-    { id: 'id', label: 'ID', minWidth: 10 },
+    { id: 'Id', label: 'ID', minWidth: 10 },
     { name: 'name', label: 'Nombre' },
     { price: 'price', label: 'Precio' },
     { description: 'description', label: 'Descripcion' },

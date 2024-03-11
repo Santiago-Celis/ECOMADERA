@@ -20,6 +20,8 @@ import MenuItem from '@mui/material/MenuItem';
 
 
 import mesa from '../../assets/mesa.jpg';
+import Navbar from '../../components/Navbar/Navbar';
+import Footer from '../../components/Footer/Footer';
 function Products() {
 
   const [open, setOpen] = React.useState(false);
@@ -27,8 +29,9 @@ function Products() {
   const handleClose = () => setOpen(false);
 
   return (
-    <div>
+    <>
 
+      <Navbar/>
 
       <Modal
         aria-labelledby="unstyled-modal-title"
@@ -41,16 +44,26 @@ function Products() {
           display: 'flex',
           flexDirection: 'row',
           width:'120vh',
+          height: '60vh',
           padding: '5em',
           justifyContent: 'center',
+          alignContent: 'center',
           gap: 150
           }}>
 
           
-            <img src={mesa} alt="" />
+            <img src={mesa} alt="" style={{ maxHeight: '400px' }} />
           
 
-          <div className="">
+          <div style={{ 
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-around',
+            textAlign: 'left',
+            fontSize: '2vh'
+            
+            
+           }}>
             
           <h1>Product Name</h1>
           <p>Description of the product.</p>
@@ -70,7 +83,10 @@ function Products() {
             
           </TextField>
           
-            <Button variant='contained' style={{ background: red[400] }} ></Button>
+            <Button variant='contained' style={{ background: red[400],
+            width: 'fit-content',
+            height: 'auto'
+            }} >Agregar al carrito</Button>
 
             </div>
         </ModalContent>
@@ -90,7 +106,7 @@ function Products() {
             color: 'text.secondary',
             justifyContent: 'space-evenly',
             alignItems: 'center',
-            height: '60em',
+            height: 'fit-content',
             gap: 10
         }}>
 
@@ -102,8 +118,8 @@ function Products() {
             bgcolor: 'background.paper',
             color: 'text.secondary',
             justifyContent: 'space-evenly',
-            alignItems: 'center',
-            height: '60em',
+            alignItems: '',
+            height: 'fit-content',
         }}>
 
     <List sx={lista} aria-label="mailbox folders">
@@ -147,12 +163,12 @@ function Products() {
       <Grid container spacing={{ xs: 5, md: -15 }} columns={{ xs: 4, sm: 8, md: 12 }} >
         {Array.from(Array(10)).map((_, box) => (
           <Grid xs={1} sm={2} md={4} key={box}>
-            <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper' }}>
+            <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
+        image={mesa}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
@@ -164,8 +180,7 @@ function Products() {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleOpen} >Share</Button>
-        <Button size="small">Learn More</Button>
+        <Button size="small" onClick={handleOpen} sx={{ width: '10vh', height: 'auto', background:red[200], color:grey[800] }}>ver mas</Button>
       </CardActions>
     </Card>
           </Grid>
@@ -178,7 +193,9 @@ function Products() {
 
     </Box>
     
-    </div>
+          <Footer/>
+
+    </>
   )
 }
 

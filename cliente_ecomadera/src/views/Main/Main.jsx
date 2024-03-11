@@ -1,4 +1,4 @@
-
+import Navbar from '../../components/Navbar/Navbar.jsx'
 import 'swiper/css'
 import styles from './Main.module.css'
 
@@ -12,13 +12,15 @@ import camion from '../../assets/Main/entrega.png'
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Cards from './CardSlider/CardSlider.jsx'
+import Footer from '../../components/Footer/Footer.jsx'
 
 function Main() {
 
 
   return (
-    <div className={styles.main}>
+      <div className={styles.main}>
     
+        <Navbar/>
         <div className={styles.general}>
         <div className={styles.texto}>
             <h1>HOLA BUENAS</h1>
@@ -106,6 +108,8 @@ function Main() {
 
 
         </div>
+
+        <Footer/>
 
     </div>
   )

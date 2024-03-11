@@ -8,6 +8,9 @@ import ListItemButton from '@mui/material/ListItemButton'
 import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import UserList from '../../components/Profile/User/UserList'
+import Navbar from '../../components/Navbar/Navbar'
+import Footer from '../../components/Footer/Footer'
+
 
 const lista = {
     p: 0,
@@ -24,6 +27,8 @@ function Profile() {
   return (
     <div>
       
+      <Navbar/>
+
       <Box
         sx={{
             display: 'flex',
@@ -65,16 +70,14 @@ function Profile() {
 
 
     <Routes>
-        <Route path='' element={<Lista/>}/>
-        <Route path='users' element={<UserList/>}/>
-        <Route path='list' element={<Lista/>} />
+        <Route path='' element={<Lista/>}/>  
     </Routes>
 
       </Box>
 
 
 
-
+        <Footer/>
 
     </div>
   )

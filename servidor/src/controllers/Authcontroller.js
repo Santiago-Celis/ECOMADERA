@@ -6,38 +6,42 @@ import { tokenSign } from "../middlewares/generateToken.js";
 
 
 export const register = async (req, res) => {
-    const { name,  email, password, phone, rol } = req.body;
+    const { name, email, password, phone, rol } = req.body;
+
+    const  userExist = await User.findOne({
+        where: {
+            email: email
+        }
+    });
 
     try {
 
         const saltRounds = 10;
         const passwordHash = await bcrypt.hash(password, saltRounds);
         
-        const newUser = await User.create({
-            name,
-            email,
-            password: passwordHash,
-            phone,
-            rol
-        });
+        if( !userExist ){
+            const newUser = await User.create({
+                name,
+                email,
+                password: passwordHash,
+                phone,
+                rol
+            });
 
-        const userSaved = await newUser;
-        
+            const userSaved = await newUser;
+            
+    
+            const token = await tokenSign(userSaved)
+    
+            res.cookie('token', token)
+            return res.send({
+                data: userSaved,
+                token
+            });
+        }else{
+            res.status(409).json({message:'El correo electronico ya existe.'})
+        }
 
-        const token = await tokenSign(userSaved)
-
-        res.cookie('token', token)
-        return res.send({
-            data: userSaved,
-            token
-        });
-
-        /* const token = createTokenAccess({ id: userSaved.id })
-        res.cookie('token', token)
-        res.status(200);
-        return res.send(userSaved); */
-        
-        /* return res.status(201).json(userSaved._id); */
 
     } catch (error) {
         res.status(500).json({

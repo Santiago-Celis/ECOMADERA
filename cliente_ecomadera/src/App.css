@@ -1,0 +1,8 @@
+:root {
+    blue: --var(#0D3B66)
+}
+
+a{
+    text-decoration: none;
+    color: grey;
+}

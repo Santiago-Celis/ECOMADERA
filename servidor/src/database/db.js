@@ -11,9 +11,10 @@ const globalOptions = {
 export const sequelize = new Sequelize(
     "ecomadera",
     "root",
-    "", {
+    "root", {
         host: "localhost",
         dialect: "mysql",
+        port: 3308,
         ...globalOptions,
     });
 
