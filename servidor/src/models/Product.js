@@ -69,9 +69,5 @@ Product.init({
     imagenURL: {
         type: DataTypes.STRING,
         allowNull: true
-    },
-    inCart:{
-        type: DataTypes.BOOLEAN, 
-        defaultValue: false
     }
 },{sequelize, modelName: 'product'})

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -17,12 +17,44 @@ import  PropTypes  from 'prop-types';
 import clsx from 'clsx';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-
+import axios from 'axios';
 
 import mesa from '../../assets/mesa.jpg';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+
+
 function Products() {
+
+  const endPoint = 'http://localhost:3001/products/products';
+
+  const [data, setData] = useState([]);
+  const API_IMG = "/servidor/imgs";
+
+
+  const getData = async () => {
+    try {
+      const response = await axios.get(endPoint);
+      setData(response.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  })
+
+  const product = [
+    { id: 'id' },
+    { name: 'name' },
+    { description: 'description' },
+    { price: 'price' },
+    { height: 'height' },
+    { width: 'width' },
+    { depth: 'depth' },
+    { imageURL: 'image' }
+  ]
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -33,12 +65,14 @@ function Products() {
 
       <Navbar/>
 
-      <Modal
+      
+        <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
         open={open}
         onClose={handleClose}
         slots={{ backdrop: StyledBackdrop }}
+        key={product.id}
       >
         <ModalContent style={{ 
           display: 'flex',
@@ -61,13 +95,11 @@ function Products() {
             justifyContent: 'space-around',
             textAlign: 'left',
             fontSize: '2vh'
+          }}>
             
-            
-           }}>
-            
-          <h1>Product Name</h1>
-          <p>Description of the product.</p>
-          <h3>Price: 5000$</h3>
+          <h1>{product.name}</h1>
+          <p>{product.description}</p>
+          <h3>Price: ${product.price}</h3>
 
           <TextField
             select
@@ -76,7 +108,7 @@ function Products() {
             sx={{ width: 120 }}
             variant="outlined"
             helperText="Elige una cantidad"
-          >
+            >
             <MenuItem value={1}>1</MenuItem>
             <MenuItem value={2}>2</MenuItem>
             <MenuItem value={3}>3</MenuItem>
@@ -86,13 +118,15 @@ function Products() {
             <Button variant='contained' style={{ background: red[400],
             width: 'fit-content',
             height: 'auto'
-            }} >Agregar al carrito</Button>
+          }} >Agregar al carrito</Button>
 
             </div>
         </ModalContent>
 
 
       </Modal>
+
+      
 
 
 
@@ -161,22 +195,21 @@ function Products() {
         }} >
 
       <Grid container spacing={{ xs: 5, md: -15 }} columns={{ xs: 4, sm: 8, md: 12 }} >
-        {Array.from(Array(10)).map((_, box) => (
-          <Grid xs={1} sm={2} md={4} key={box}>
+        {data.map((product, idx) => (
+          <Grid xs={1} sm={2} md={4} key={product.id}>
             <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image={mesa}
+        image={API_IMG + product.image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
-          Lizard
+          {product.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
+          {product.price}
         </Typography>
       </CardContent>
       <CardActions>

@@ -10,27 +10,30 @@ import Register from './views/Register/Register'
 import Login from './views/Login/Login'
 import Products from './views/Products/Products'
 import ProfileAdmin from './views/ProfileAdmin/ProfileAdmin.'
+import { ShoppingCartProvider } from './context/ShoppingCartContext'
 
 
 function App() {
-  const [count, setCount] = useState(0)
+
+  const [product, setProduct] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [countProducts, setCountPtoducts] = useState(0);
 
   return (
     <>
-       {/* <Navbar/> */} 
+      <ShoppingCartProvider>
+        <Routes>
+          <Route path='/' element={<Main/>}/>
+          <Route path='/Main' element={<Main/>}/>
+          <Route path='/Register' element={<Register/>}/>
+          <Route path='/Login' element={<Login/>}/>
 
-      <Routes>
-        <Route path='/' element={<Main/>}/>
-        <Route path='/Main' element={<Main/>}/>
-        <Route path='/Register' element={<Register/>}/>
-        <Route path='/Login' element={<Login/>}/>
-
-        <Route path='/Admin/*' element={<ProfileAdmin/>}>
-        </Route>
-        <Route path='/Products' element={<Products/>}/>
-        <Route path='/Profile/*' element={<Profile/>}></Route>
-      </Routes>
-
+          <Route path='/Admin/*' element={<ProfileAdmin/>}>
+          </Route>
+          <Route path='/Products' element={<Products/>}/>
+          <Route path='/Profile/*' element={<Profile/>}></Route>
+        </Routes>
+      </ShoppingCartProvider>
     </>
   )
 }
