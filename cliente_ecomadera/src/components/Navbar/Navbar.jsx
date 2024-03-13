@@ -16,8 +16,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import mesa from '../../assets/mesa.jpg';
 import axios from 'axios';
+import { CartContext } from '../../context/ShoppingCartContext';
+import { Badge } from '@mui/material';
+import { useContext } from 'react';
 
 function Navbar() {
+
+    const [carro, setCarro] = useContext(CartContext);
+
+    const quantity = carro.reduce((acc, curr) => {
+      return acc + curr.quantity;
+    }, 0);
+
 
     const navigate = useNavigate();
 
@@ -106,13 +116,15 @@ function Navbar() {
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
       </Menu>
       
-      <Button
-        id="basic-button"
-        sx={{ width: 'fit-content', height: 'fit-content' }}
-        >
-        <LuShoppingCart style={{ fontSize: '40px', color: 'white' }} onClick={toggleDrawer(true)}/>
-      </Button>
-        
+        <Button
+          id="basic-button"
+          sx={{ width: 'fit-content', height: 'fit-content' }}
+          >
+      <Badge badgeContent={quantity} color='primary'>
+          <LuShoppingCart style={{ fontSize: '40px', color: 'white' }} onClick={toggleDrawer(true)}/>
+      </Badge>
+        </Button>
+      
         <Drawer anchor={'right'} open={cart} onClose={toggleDrawer(false)}>
         <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper' }}>
             <CardMedia

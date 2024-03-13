@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -22,58 +22,111 @@ import axios from 'axios';
 import mesa from '../../assets/mesa.jpg';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
+import { CartContext } from '../../context/ShoppingCartContext';
+
+
+
 
 
 function Products() {
 
+  
+
   const endPoint = 'http://localhost:3001/products/products';
 
   const [data, setData] = useState([]);
+  const [product, setProduct] = useState([]);
   const API_IMG = "/servidor/imgs";
 
-
+  
   const getData = async () => {
     try {
       const response = await axios.get(endPoint);
-      setData(response.data);
+      setData(response.data)
+
+      /* console.log(data) */
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
+  
   useEffect(() => {
     getData();
-  })
+  }, [])
+  
+  
+  
+  
+  
+  const [cart, setCart] = useContext(CartContext);
+  
 
-  const product = [
-    { id: 'id' },
-    { name: 'name' },
-    { description: 'description' },
-    { price: 'price' },
-    { height: 'height' },
-    { width: 'width' },
-    { depth: 'depth' },
-    { imageURL: 'image' }
-  ]
+
+
+
+  const addToCart = () => {
+    setCart((currItems) => {
+        const isItemsFound = currItems.find((product) => product.id === id)
+        if(isItemsFound){
+          return currItems.map((product) => {
+            if(product.id === id){
+              return {...product, quantity: product.quantity + 1}
+            } else {
+              return product;
+            }
+          });
+        } else {
+          return [...currItems, {id, quantity: 1, price}]
+        }
+    });
+  };
+
+  const removeItem = (id) => {
+    setCart((currItems) => {
+      if(currItems.find((product)=> product.id === id)?.quantity === 1){
+        return currItems.filter((product) => product.id !== id);
+      } else {
+        return currItems.map((product) => {
+          if(product.id === id) {
+            return {...product, quantity: product.quantity -1};
+          } else {
+            return product;
+          }
+        })
+      }
+    })
+  };
+
+  const getQuantityById = (id) => {
+    return cart.find((product) => product.id === id)?.quantity || 0;
+  };
+
+  const quantityPerItem = getQuantityById(product.id);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  
 
   return (
     <>
 
       <Navbar/>
 
-      
-        <Modal
+      {data.map((product, idx) => {
+          
+      <Modal
         aria-labelledby="unstyled-modal-title"
         aria-describedby="unstyled-modal-description"
         open={open}
         onClose={handleClose}
-        slots={{ backdrop: StyledBackdrop }}
+        slots={{  backdrop: StyledBackdrop  }}
         key={product.id}
       >
+        
+
         <ModalContent style={{ 
           display: 'flex',
           flexDirection: 'row',
@@ -83,7 +136,8 @@ function Products() {
           justifyContent: 'center',
           alignContent: 'center',
           gap: 150
-          }}>
+        }}
+        >
 
           
             <img src={mesa} alt="" style={{ maxHeight: '400px' }} />
@@ -96,10 +150,24 @@ function Products() {
             textAlign: 'left',
             fontSize: '2vh'
           }}>
+
+          
+          <div >
+            <Typography key={product.name} variant='body1' color="text-secondary">
+              {product.name}
+            </Typography>
+            <Typography variant='body1' color="text-secondary">
+              {product.description}
+            </Typography>
+            <Typography variant='body1' color="text-secondary">
+              ${product.price}
+            </Typography>
+          
+          
+          {/* <p>{product.description}</p>
+          <h3>Price: ${product.price}</h3> */}
             
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
-          <h3>Price: ${product.price}</h3>
+          </div>
 
           <TextField
             select
@@ -114,21 +182,23 @@ function Products() {
             <MenuItem value={3}>3</MenuItem>
             
           </TextField>
-          
-            <Button variant='contained' style={{ background: red[400],
-            width: 'fit-content',
-            height: 'auto'
-          }} >Agregar al carrito</Button>
+          {
+            quantityPerItem > 0 && (
+              <Button variant='contained' style={{ background: red[400],
+              width: 'fit-content',
+              height: 'auto'
+            }} >Agregar al carrito</Button>
+            )
+          }
 
             </div>
         </ModalContent>
+       
 
 
       </Modal>
 
-      
-
-
+})}
 
       <Box
         sx={{
@@ -197,12 +267,12 @@ function Products() {
       <Grid container spacing={{ xs: 5, md: -15 }} columns={{ xs: 4, sm: 8, md: 12 }} >
         {data.map((product, idx) => (
           <Grid xs={1} sm={2} md={4} key={product.id}>
-            <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
+            <Card sx={{ maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image={API_IMG + product.image}
+        image={product.image}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
