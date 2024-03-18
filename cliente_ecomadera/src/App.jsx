@@ -11,6 +11,7 @@ import Login from './views/Login/Login'
 import Products from './views/Products/Products'
 import ProfileAdmin from './views/ProfileAdmin/ProfileAdmin.'
 import { ShoppingCartProvider } from './context/ShoppingCartContext'
+import Cart from './views/Cart/cart'
 
 
 function App() {
@@ -32,10 +33,14 @@ function App() {
           </Route>
           <Route path='/Products' element={<Products/>}/>
           <Route path='/Profile/*' element={<Profile/>}></Route>
+          <Route path='/cart' element={<Cart/>}/>
+
         </Routes>
       </ShoppingCartProvider>
     </>
   )
 }
+
+
 
 export default App

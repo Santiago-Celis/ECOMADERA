@@ -5,19 +5,18 @@ import { RiInstagramFill } from "react-icons/ri";
 import { IoLogoTiktok } from "react-icons/io5";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { IoCar } from "react-icons/io5";
+import { Typography } from '@mui/material';
 
 
 function Footer() {
   return (
     <footer>
       <div className="footer-left">
-        <p>Síguenos en:</p>
+        <Typography variant='body3'>Siguenos en:</Typography>
         <div className="social-icons">
-        <FaFacebookF style={{fontSize:'25'}}/>
-        <RiInstagramFill style={{fontSize:'30'}}  />
-        <IoLogoTiktok tyle={{fontSize:'60'}}   />
-
-        
+        <FaFacebookF style={{fontSize:'50'}}/>
+        <RiInstagramFill style={{fontSize:'50'}}  />
+        <IoLogoTiktok style={{fontSize:'50'}}   />
         </div>
       </div>
       <div className="footer-center">

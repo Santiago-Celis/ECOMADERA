@@ -1,0 +1,30 @@
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 450px; 
+  }
+  
+  .noDirecciones {
+    margin-bottom: 20px; 
+  }
+  
+  .botonAgregar {
+    margin-top: auto; 
+  }
+  
+  .linkAgregar {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #afc0d3;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+  }
+  
+  .linkAgregar:hover {
+    background-color: #bcc7d2;
+  }

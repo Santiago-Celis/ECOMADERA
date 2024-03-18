@@ -23,6 +23,7 @@ import mesa from '../../assets/mesa.jpg';
 import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { CartContext } from '../../context/ShoppingCartContext';
+import { Azul } from '../../Colors';
 
 
 
@@ -36,15 +37,32 @@ function Products() {
 
   const [data, setData] = useState([]);
   const [product, setProduct] = useState([]);
-  const API_IMG = "/servidor/imgs";
-
   
+  const [filter, setFilter] = useState('');
+  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+
+
+
+  const handleFilter = async () => {
+    const { filtro } = await axios.get('/category/categories', {
+      params:
+      { filter },
+    });
+    
+    if (filtro) {
+      setData(filtro);
+    } else {
+      getAllProducts();
+    };
+  };
+
   const getData = async () => {
     try {
-      const response = await axios.get(endPoint);
+      const response = await axios.get(endPoint, {
+        headers:
+        {'Authorization': 'Bearer '+ sessionStorage.getItem('token')}
+      });
       setData(response.data)
-
-      /* console.log(data) */
     } catch (error) {
       console.error('Error fetching data:', error);
     }
@@ -53,50 +71,40 @@ function Products() {
   
   useEffect(() => {
     getData();
+    localStorage.getItem("cart") === null ? setCart([]) : setCart(JSON.parse(localStorage.getItem("cart")))
   }, [])
-  
-  
-  
-  
-  
-  const [cart, setCart] = useContext(CartContext);
-  
 
 
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+    console.log(cart);
+  }, [cart])
 
+  
+  
+  
 
-  const addToCart = () => {
+  const addToCart = (product) => {
     setCart((currItems) => {
-        const isItemsFound = currItems.find((product) => product.id === id)
-        if(isItemsFound){
-          return currItems.map((product) => {
-            if(product.id === id){
-              return {...product, quantity: product.quantity + 1}
-            } else {
-              return product;
-            }
-          });
-        } else {
-          return [...currItems, {id, quantity: 1, price}]
-        }
-    });
-  };
+      
+      const isItemsFound = currItems.find((producto) => producto.id === product.id)
 
-  const removeItem = (id) => {
-    setCart((currItems) => {
-      if(currItems.find((product)=> product.id === id)?.quantity === 1){
-        return currItems.filter((product) => product.id !== id);
-      } else {
-        return currItems.map((product) => {
-          if(product.id === id) {
-            return {...product, quantity: product.quantity -1};
-          } else {
-            return product;
+      if (isItemsFound) {
+        return currItems.map((producto) => {
+
+          if (producto.id === product.id){
+            return { ...producto, quantity: parseInt( producto.quantity + 1 )}
           }
-        })
+          return producto;
+        });
+      } else {
+        return [...currItems, { quantity: 1, ...product }]
       }
-    })
+    });
+    console.log('Agregando Producto');
   };
+
+  
 
   const getQuantityById = (id) => {
     return cart.find((product) => product.id === id)?.quantity || 0;
@@ -115,90 +123,7 @@ function Products() {
 
       <Navbar/>
 
-      {data.map((product, idx) => {
-          
-      <Modal
-        aria-labelledby="unstyled-modal-title"
-        aria-describedby="unstyled-modal-description"
-        open={open}
-        onClose={handleClose}
-        slots={{  backdrop: StyledBackdrop  }}
-        key={product.id}
-      >
-        
 
-        <ModalContent style={{ 
-          display: 'flex',
-          flexDirection: 'row',
-          width:'120vh',
-          height: '60vh',
-          padding: '5em',
-          justifyContent: 'center',
-          alignContent: 'center',
-          gap: 150
-        }}
-        >
-
-          
-            <img src={mesa} alt="" style={{ maxHeight: '400px' }} />
-          
-
-          <div style={{ 
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            textAlign: 'left',
-            fontSize: '2vh'
-          }}>
-
-          
-          <div >
-            <Typography key={product.name} variant='body1' color="text-secondary">
-              {product.name}
-            </Typography>
-            <Typography variant='body1' color="text-secondary">
-              {product.description}
-            </Typography>
-            <Typography variant='body1' color="text-secondary">
-              ${product.price}
-            </Typography>
-          
-          
-          {/* <p>{product.description}</p>
-          <h3>Price: ${product.price}</h3> */}
-            
-          </div>
-
-          <TextField
-            select
-            label="Cantidad"
-            defaultValue={1}
-            sx={{ width: 120 }}
-            variant="outlined"
-            helperText="Elige una cantidad"
-            >
-            <MenuItem value={1}>1</MenuItem>
-            <MenuItem value={2}>2</MenuItem>
-            <MenuItem value={3}>3</MenuItem>
-            
-          </TextField>
-          {
-            quantityPerItem > 0 && (
-              <Button variant='contained' style={{ background: red[400],
-              width: 'fit-content',
-              height: 'auto'
-            }} >Agregar al carrito</Button>
-            )
-          }
-
-            </div>
-        </ModalContent>
-       
-
-
-      </Modal>
-
-})}
 
       <Box
         sx={{
@@ -211,7 +136,8 @@ function Products() {
             justifyContent: 'space-evenly',
             alignItems: 'center',
             height: 'fit-content',
-            gap: 10
+            gap: 10,
+            flexDirection: 'column'
         }}>
 
 <Box
@@ -224,31 +150,14 @@ function Products() {
             justifyContent: 'space-evenly',
             alignItems: '',
             height: 'fit-content',
+            flexWrap:'wrap',
+            flexDirection:'row'
         }}>
 
-    <List sx={lista} aria-label="mailbox folders">
-        
-        <ListItem disablePadding>
-          <ListItemButton>
-            <ListItemText primary="Perfil" ></ListItemText>
-          </ListItemButton>
-        </ListItem>
-
-        
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Usuarios" />
-            </ListItemButton>
-          </ListItem>
-        
-
-          <ListItem disablePadding>
-            <ListItemButton>
-              <ListItemText primary="Productos" />
-            </ListItemButton>
-          </ListItem>
-        
-    </List>
+        <Typography variant="h1" color="initial"></Typography>
+        <Typography variant="h1" color="initial"></Typography>
+        <Typography variant="h1" color="initial"></Typography>
+        <Typography variant="h1" color="initial"></Typography>
 
     </Box>
         
@@ -264,26 +173,29 @@ function Products() {
             width: '100%',
         }} >
 
-      <Grid container spacing={{ xs: 5, md: -15 }} columns={{ xs: 4, sm: 8, md: 12 }} >
+      <Grid container spacing={{ xs: 2, md: -5, }} columns={{ xs: 5, sm: 4 }} sx={{ gap: '5em' }}>
         {data.map((product, idx) => (
-          <Grid xs={1} sm={2} md={4} key={product.id}>
-            <Card sx={{ maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
+          <Grid  key={product.id}>
+            <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
         component="img"
         alt="green iguana"
         height="140"
-        image={product.image}
+        image={`http://localhost:3001/image/${product.imagenURL}`}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="div">
           {product.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary">
-          {product.price}
+        <Typography gutterBottom variant="body1" color="grey" component="div">
+          {product.description}
+        </Typography>
+        <Typography variant="h5" color={Azul[500]}>
+          Precio: ${product.price}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" onClick={handleOpen} sx={{ width: '10vh', height: 'auto', background:red[200], color:grey[800] }}>ver mas</Button>
+        <Button size="small" onClick={() => addToCart(product)} sx={{ width: '100%', height: 'auto', background:Azul[500], color:grey[800] }}>Añadir al carrito</Button>
       </CardActions>
     </Card>
           </Grid>
@@ -428,18 +340,5 @@ const ModalContent = styled('div')(
     }
   `,
 );
-
-
-
-const lista = {
-    p: 0,
-    width: '100%',
-    maxWidth: 360,
-    borderRadius: 2,
-    border: '1px solid',
-    borderColor: 'divider',
-    backgroundColor: 'background.paper',
-};
-
 
 export default Products

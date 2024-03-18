@@ -8,6 +8,7 @@ import categoryRoutes from './router/Category.routes.js'
 import addressRoutes from './router/Address.routes.js'
 import cardRoutes from './router/Cards.routes.js'
 import rolRoutes from './router/Rol.routes.js'
+import PaymentRoutes from './router/Payment.routes.js'
 
 const  app = express();
 app.use(express.json());
@@ -15,6 +16,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors());
 
+
+app.use('/image', express.static('./src/imgs'))
 app.use(morgan('dev'));
 app.use("/api", authRoutes);
 app.use("/products", productRoutes);
@@ -22,5 +25,6 @@ app.use("/category", categoryRoutes);
 app.use("/address", addressRoutes);
 app.use("/card", cardRoutes);
 app.use("/rol", rolRoutes);
+app.use("/payment", PaymentRoutes);
 // 
 export default app;

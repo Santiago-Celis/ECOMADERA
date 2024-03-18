@@ -69,11 +69,11 @@ export const login = async (req, res) => {
 
             const token = await tokenSign(userFound)
 
-            res.cookie('token', token);
+            /* res.cookie('token', token); */
             res.send({
-                data: userFound,
+                data: userFound, 
                 token
-            })
+                })
 
         } else {
             res.status(401).json({ msg: "Contraseña incorrecta" });

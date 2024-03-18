@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Koulen&family=Nunito:wght@300&display=swap');
 
 .contenedor{
-    background-color: #B3001B;
+    background-color: #906040;
     height: 100vh;
     width: 100%;
     display: flex;
@@ -63,7 +63,7 @@ span{
 
 .boton{
     display: flex;
-    width: 10%;
+    width: 20%;
     height: 8vh;
     border-radius: 100%;
     justify-content: center;

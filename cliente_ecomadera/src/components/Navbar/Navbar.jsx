@@ -19,27 +19,37 @@ import axios from 'axios';
 import { CartContext } from '../../context/ShoppingCartContext';
 import { Badge } from '@mui/material';
 import { useContext } from 'react';
+import { useEffect } from 'react';
+import Logo from '../../assets/LOGO.png'
 
 function Navbar() {
 
-    const [carro, setCarro] = useContext(CartContext);
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);;
 
-    const quantity = carro.reduce((acc, curr) => {
+    useEffect(() => {
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }, [cart])
+
+
+
+    const quantity = cart.reduce((acc, curr) => {
       return acc + curr.quantity;
     }, 0);
 
 
     const navigate = useNavigate();
 
-    const [cart, setCart] = React.useState(false);
-    const handleOpen = () => setOpen(true);
 
-  const toggleDrawer = (newCart) => () => {
-    setCart(newCart);
-  };
+    const handleCart = (e) => {
+      navigate('/cart')
+    }
+    
 
     const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+
+
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -51,8 +61,9 @@ function Navbar() {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/api/logout');
-      navigate('/login')
+      const response = await fetch('http://localhost:3001/api/logout')
+      sessionStorage.removeItem('token');
+      navigate('/Login')
       
     } catch (error) {
       console.log(error);
@@ -66,19 +77,19 @@ function Navbar() {
       <div className={styles.General}>
 
         <Link to ="/" className={styles.Link} >
-          <p >ECOMADERA</p>
+          <img src={Logo} alt="" className={styles.Logo} />
         </Link>
 
         <div className={styles.Busqueda}>
         <TextField fullWidth label="Buscar" id="fullWidth" size='small' sx={{
           borderRadius: 3,
-          backgroundColor: 'grey',  //Cambiar variable de color
+          backgroundColor: '##9DA8B7',  //Cambiar variable de color
           
         }}
         />
 
             <ul>
-              <Link to='/Products' style={{ color: 'white' }}>
+              <Link to='/Products' style={{ color: 'black' }}>
                 <li>Productos</li>
               </Link>
                 <li>Categorias</li>
@@ -98,7 +109,7 @@ function Navbar() {
         onClick={handleClick}
         sx={{ width: 'fit-content', height: 'fit-content' }}
       >
-        <CgProfile style={{ fontSize: '40px', color: 'white' }}/>
+        <CgProfile style={{ fontSize: '30px', color: 'black' }}/>
       </Button>
       <Menu
         id="basic-menu"
@@ -109,8 +120,8 @@ function Navbar() {
           'aria-labelledby': 'basic-button',
         }}
       >
-        <Link to={'/Profile'} styles={{ color: 'white' }}>
-          <MenuItem onClick={handleClose}>Profile</MenuItem>
+        <Link to={'/Profile'} styles={{ color: 'grey' }}>
+          <MenuItem onClick={handleClose} sx={{ color: 'grey' }}>Profile</MenuItem>
         </Link>
         <MenuItem onClick={handleClose}>My account</MenuItem>
         <MenuItem onClick={handleLogout}>Logout</MenuItem>
@@ -120,33 +131,12 @@ function Navbar() {
           id="basic-button"
           sx={{ width: 'fit-content', height: 'fit-content' }}
           >
-      <Badge badgeContent={quantity} color='primary'>
-          <LuShoppingCart style={{ fontSize: '40px', color: 'white' }} onClick={toggleDrawer(true)}/>
+      <Badge badgeContent={cart.id} color='primary'>
+          <LuShoppingCart style={{ fontSize: '30px', color: 'black' }} onClick={handleCart}/>
       </Badge>
         </Button>
       
-        <Drawer anchor={'right'} open={cart} onClose={toggleDrawer(false)}>
-        <Card sx={{ maxWidth: 345, margin: '50px 20px', background: 'paper' }}>
-            <CardMedia
-              component="img"
-              alt="green iguana"
-              height="140"
-              image={mesa}
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="div">
-                Lizard
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Lizards are a widespread group of squamate reptiles, with over 6,000
-                species, ranging across all continents except Antarctica
-              </Typography>
-            </CardContent>
-            <CardActions>
-              <Button size="small" onClick={handleOpen} sx={{ width: '10vh', height: 'auto', background:red[200], color:grey[800] }}>ver mas</Button>
-            </CardActions>
-        </Card>
-        </Drawer>
+        
 
     </div>
       </div>

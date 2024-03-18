@@ -5,7 +5,7 @@ import { createCategory, deleteCategory, getCategories, updateCategory, getCateg
 import { requiredAuth } from "../middlewares/tokenValidation.js";
 
 router.post('/newCategory', requiredAuth, createCategory);
-router.get('/categories', requiredAuth, getCategories);
+router.get('/categories',  getCategories);
 router.get('/category/:id', requiredAuth, getCategory);
 router.put('/updateCategory/:id', requiredAuth, updateCategory);
 router.delete('/deleteCategory/:id', requiredAuth, deleteCategory);

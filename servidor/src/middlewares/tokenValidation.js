@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import { TOKEN_SECRET } from "../config.js";
-import { verifyToken } from "./generateToken.js";
+import { authenticateToken } from "./generateToken.js";
 
 
 export const requiredAuth = async (req, res, next) => {
     try {
-
-        const token = await req.cookies.token
-        const tokenData = await verifyToken(token)
+        
+        const token = await req.token
+        const tokenData = await authenticateToken(token)
         console.log(tokenData);
         if (tokenData.id){
             req.user = tokenData

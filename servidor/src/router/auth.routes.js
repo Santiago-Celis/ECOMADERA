@@ -11,8 +11,9 @@ router.post('/register', register)
 router.post('/login', login)
 router.post('/logout', logout)
 
+router.get('/verify', requiredAuth)
 router.get('/profile', requiredAuth, profile)
-router.get('/users', /* requiredAuth */ users)
+router.get('/users', users)
 router.delete('/deleteUser/:id', deleteUsers)
 
 

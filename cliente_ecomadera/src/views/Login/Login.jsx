@@ -16,7 +16,6 @@ export default function Login() {
   const [password, setPassword] = useState('')
   const [email, setEmail] = useState('')
 
-  console.log(password, email);
 
   const handleLogin = async (e) =>{
     e.preventDefault();
@@ -32,13 +31,31 @@ export default function Login() {
     }
     
     try {
-      const endpoint = await axios.post('http://localhost:3001/api/login', {
+      const response = await fetch('http://localhost:3001/api/login', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+        body: JSON.stringify({
+          email:email,
+          password: password
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.token){
+          sessionStorage.setItem('token', data.token)
+          navigate('/')
+        }
+      })
+
+      console.log(response);
+      /* const endpoint = await axios.post('http://localhost:3001/api/login', {
         email,
         password
-      }
-      );
+      });
 
-      navigate('/')
+      navigate('/') */
       
     } catch (error) {
       console.log(error);

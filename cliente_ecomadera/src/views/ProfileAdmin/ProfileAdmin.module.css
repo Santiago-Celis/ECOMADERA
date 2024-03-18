@@ -1,6 +1,6 @@
 .container {
   max-width: 800px;
-  height: 450px;
+  height: fit-content;
   padding: 20px;
   border: 1px solid rgba(8, 7, 7, 0.439);
   border-radius: 5px;
@@ -23,6 +23,7 @@ h2{
 .campo {
   width: 100%;
   margin-bottom: 20px;
+  border: black;
 
 }
 
@@ -35,7 +36,17 @@ h2{
   resize: none;
 }
 
-button {
+.botonCrear{
+  width: 100px;
+  padding: 10px;
+  background-color: #78909C;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* button {
   width: 100px;
   padding: 10px;
   background-color: #007bff;
@@ -43,8 +54,8 @@ button {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-}
+} */
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #78909C;
 }

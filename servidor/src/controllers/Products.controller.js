@@ -4,7 +4,11 @@ import fs from 'fs';
 
 export const createProduct = async (req, res) => {
     const { name, height, width, depth, price, description, categoryId} = req.body;
-    const imagenURL = req.file ? req.file.path : null;
+    let nameImage = req.file.path.split('\\')
+    nameImage = nameImage[nameImage.length - 1]
+    nameImage = nameImage.replace(' ', '_')
+    console.log( nameImage[nameImage.lenght - 1])
+    const imagenURL = req.file ? nameImage : null;
 
 
     try {
@@ -18,7 +22,8 @@ export const createProduct = async (req, res) => {
             price,
             imagenURL  
         });
-        const productSaved = await newProduct;
+
+        const productSaved = await newProduct.save();
 
         return res.status(201).json(productSaved);
     } catch (error) {
