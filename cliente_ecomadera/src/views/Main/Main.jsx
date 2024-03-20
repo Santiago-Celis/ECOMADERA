@@ -11,6 +11,7 @@ import Carpintero from '../../assets/Main/carpinteroIcon.png'
 import arbol from '../../assets/Main/arbolIcon.png'
 import camion from '../../assets/Main/entrega.png'
 import mueblec from '../../assets/Main/muebleC.jpg' 
+
 /* import mueble from '../../assets/Main/muebleC.jpg' */
 
 import { Swiper, SwiperSlide } from 'swiper/react';

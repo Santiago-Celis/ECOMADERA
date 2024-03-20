@@ -12,8 +12,6 @@ import { MdCancel } from "react-icons/md";
 
 export default function Register() {
 
-  /* const navigate = useNavigate(); */
-
   const navigate = useNavigate();
 
 
@@ -73,15 +71,33 @@ export default function Register() {
     }
 
     try {
-
-      const response = await axios.post("http://localhost:3001/api/register", {
+      const response = await fetch('http://localhost:3001/api/register', {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/JSON",
+        },
+        body: JSON.stringify({
+          name: name,
+          phone: phone,
+          email:email,
+          password: password
+        }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if(data.token){
+          sessionStorage.setItem('token', data.token)
+          navigate('/')
+        }
+      })
+      /* const response = await axios.post("http://localhost:3001/api/register", {
         name: name,
         email: email,
         phone: phone,
         password: password
 
       });
-
+      console.log(response) */
       navigate('/Login')
 
     } catch (err) {

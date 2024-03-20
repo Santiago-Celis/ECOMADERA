@@ -85,7 +85,7 @@ export default function BasicTable() {
     <div className={style.form}>
 
       <DownloadTableExcel
-        filename="users table"
+        filename="Products"
         sheet="users"
         currentTableRef={tableRef.current}
       >
@@ -95,7 +95,7 @@ export default function BasicTable() {
       </DownloadTableExcel>
 
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440 }} ref={tableRef}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -122,7 +122,7 @@ export default function BasicTable() {
                         <TableCell key={column.id} /* align={column.align} */>
                           {column.format && typeof value === 'number'
                             ? column.format(value)
-                            : value }
+                            : value}
                             
                         </TableCell>
                       );

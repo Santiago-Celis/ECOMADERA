@@ -24,12 +24,16 @@ function cart() {
   });
   
 
-  const createPreference = async (amount, name) => {
+  const createPreference = async () => {
     try {
-      const response = await axios.post('http://localhost:3001/payment/create_Order')
+      const response = await axios.post('http://localhost:3001/payment/create_Order', {
+        cart,
+        totalPrice
+      })
 
-      
+      setPreferenceId(response.data.preferenceId);
 
+      window.location.href = response.init_point
     } catch (error) {
       console.log(error);
     }
@@ -119,7 +123,7 @@ function cart() {
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size="small" onClick={() => removeItem(product.id)} sx={{ width: 'fit-content', height: 'auto', background:red[200], color:grey[800] }}>Eliminar del carrito</Button>
+              <Button size="small" onClick={() => removeItem(product.id)} sx={{ width: 'fit-content', height: 'auto', background:Cafe[500], color:grey[800] }}>Eliminar del carrito</Button>
             </CardActions>
           </Card>
       ))}
@@ -141,8 +145,9 @@ function cart() {
           <Typography variant='h5' color="brown">
             Precio Total: $ {totalPrice}
           </Typography>
-          {<Button size="large" /* onClick={() => createPreference(cart.length, cart.name)} */ sx={{ width: '100%', height: 'auto', background:Cafe[500], color:'black' }}>COMPRAR</Button>}
-          <Wallet initialization={{ preferenceId: "<PREFERENCE_ID>" }}/>
+          
+          
+          <Wallet initialization={{ preferenceId: '<PREFERENCEID>' }}/>
         </Paper>
 
 

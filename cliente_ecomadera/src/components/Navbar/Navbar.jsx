@@ -8,6 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { CgProfile } from "react-icons/cg";
 import { LuShoppingCart } from "react-icons/lu";
 import { Link, useNavigate } from 'react-router-dom'
+
 import Drawer from '@mui/material/Drawer';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -23,6 +24,22 @@ import { useEffect } from 'react';
 import Logo from '../../assets/LOGO.png'
 
 function Navbar() {
+
+  const url = 'http://localhost:3001/category/categories';
+    const [category, setCategory] = useState([]);
+
+    const getCategory = async () => {
+        try {
+            const res = await axios.get(url)
+            setCategory(res.data)
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    useEffect(() => {
+        getCategory();
+    }, [])
 
     const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);;
 
@@ -46,9 +63,19 @@ function Navbar() {
     
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+    const [abrirCatego, setAbrirCatego] = useState(null);
+
+    const abrir = Boolean(abrirCatego);
+    const open = Boolean(anchorEl);
 
 
+
+  const handleCatego = (event) => {
+    setAbrirCatego(event.currentTarget);
+  };
+  const handleCerrar = () => {
+    setAbrirCatego(null);
+  };
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -92,11 +119,30 @@ function Navbar() {
               <Link to='/Products' style={{ color: 'black' }}>
                 <li>Productos</li>
               </Link>
-                <li>Categorias</li>
-                {/* <li>Sala</li>
-                <li>Estudio</li>
-                <li>Cocina</li>
-                <li>Gamer</li> */}
+                <li
+                aria-controls={abrir ? 'basic-menu' : undefined}
+                aria-haspopup='true'
+                onClick={handleCatego}
+                aria-expanded={abrir ? 'true' : undefined}
+                sx={{ width: 'fit-content', height: 'fit-content' }}
+                >
+                  Categorias</li>
+                  <Menu
+                  id="basic-menu"
+                  anchorEl={abrirCatego}
+                  open={abrir}
+                  onClose={handleCerrar}
+                  MenuListProps={{
+                    'aria-labelledby': 'basic-button',
+                  }}
+                  >
+                    {category.map((category, i) => (
+                    <Link navigate={'/Products'}>
+                      <MenuItem onClick={handleClose} sx={{ color: 'grey' }}>{category.name}</MenuItem>
+                    </Link>            
+                            ))}
+                  </Menu>
+                
             </ul>
         </div>
         <div className={styles.menus}>

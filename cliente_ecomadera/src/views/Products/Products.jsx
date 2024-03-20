@@ -176,7 +176,7 @@ function Products() {
       <Grid container spacing={{ xs: 2, md: -5, }} columns={{ xs: 5, sm: 4 }} sx={{ gap: '5em' }}>
         {data.map((product, idx) => (
           <Grid  key={product.id}>
-            <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
+            <Card  key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
         component="img"
         alt="green iguana"
@@ -340,5 +340,7 @@ const ModalContent = styled('div')(
     }
   `,
 );
+
+/* defaultCategory={categoryDetail.some((categoria) => categoria.CategoryId === product.categoryId)} value={product.categoryId} */
 
 export default Products

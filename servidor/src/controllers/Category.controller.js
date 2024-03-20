@@ -5,7 +5,7 @@ export const createCategory = async ( req, res ) => {
 
     try {
         const newCategory = await  Category.create({name});
-        const categorySaved = await newCategory;
+        const categorySaved = newCategory;
         res.status(201).json(categorySaved)
     } catch (error) {
         res.status(500).json({ message: error.message })

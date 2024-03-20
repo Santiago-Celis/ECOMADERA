@@ -33,7 +33,7 @@ export const register = async (req, res) => {
     
             const token = await tokenSign(userSaved)
     
-            res.cookie('token', token)
+            /* res.cookie('token', token) */
             return res.send({
                 data: userSaved,
                 token

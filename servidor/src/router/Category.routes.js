@@ -4,7 +4,7 @@ const router = Router();
 import { createCategory, deleteCategory, getCategories, updateCategory, getCategory } from "../controllers/Category.controller.js";
 import { requiredAuth } from "../middlewares/tokenValidation.js";
 
-router.post('/newCategory', requiredAuth, createCategory);
+router.post('/newCategory',  createCategory);
 router.get('/categories',  getCategories);
 router.get('/category/:id', requiredAuth, getCategory);
 router.put('/updateCategory/:id', requiredAuth, updateCategory);
