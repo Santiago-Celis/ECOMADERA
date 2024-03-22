@@ -75,6 +75,7 @@ function CrearProducto() {
                 formulario, {headers: { 'Content-Type': 'multipart/form-data'}}
             )
             console.log(response);
+            toast.success('!El producto se ha registrado correctamente¡');
         } catch (error) {
             console.log(error);
             toast.error("Error al agregar el producto");

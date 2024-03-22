@@ -18,13 +18,16 @@ export const tokenSign = async (user) => {
 }
 
 export const authenticateToken = (req, res, next) => {
+
+    
+
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1]; // Bearer TOKEN
   
-    if (token == null) return res.sendStatus(401); // Si no hay token, no está autorizado
+    if (token == null) return res.status(401); // Si no hay token, no está autorizado
   
     jwt.verify(token, TOKEN_SECRET, (err, user) => {
-      if (err) return res.sendStatus(403); // Si hay un error al verificar, podría ser un token no válido o expirado
+      if (err) return res.status(403); // Si hay un error al verificar, podría ser un token no válido o expirado
       req.user = user; // Si el token es válido, guarda el payload en req.user
       next(); // Continúa con la siguiente middleware o ruta
     });

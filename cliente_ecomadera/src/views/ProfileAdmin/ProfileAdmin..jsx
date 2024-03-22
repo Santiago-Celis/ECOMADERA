@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/Footer.jsx';
 import ActualizarProducto from '../../components/Profile/Admin/ActualizarProducto.jsx';
 import Lista from '../../components/Profile/List/Lista.jsx';
 import Admin from '../../components/Profile/Admin/UserAdmin.jsx';
+import CrearCategoria from '../../components/Profile/Admin/CrearCategoria.jsx';
 
 
 const lista = {
@@ -77,6 +78,13 @@ function ProfileAdmin() {
               </ListItemButton>
             </ListItem>
           </Link>
+          <Link to={'createCategory'}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ borderBottom: '2px solid #906040' }}>
+                <ListItemText primary="Crear Categoria" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
         </List>
 
         <Box sx={{ height:'fit-content' }}>
@@ -86,6 +94,7 @@ function ProfileAdmin() {
             <Route path='/createProduct' element={<CrearProducto />} />
             <Route path='/updateProduct' element={<ActualizarProducto />} />
             <Route path='/UserAdmin' element={<Admin />} />
+            <Route path='/createCategory' element={<CrearCategoria/>} />
           </Routes>
         </Box>
       </Box>

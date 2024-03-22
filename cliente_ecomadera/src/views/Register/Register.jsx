@@ -62,7 +62,7 @@ export default function Register() {
     }
 
     if (password.length < 8) {
-      toast.warning("Contraseña débil", "La contraseña debe tener al menos 8 caracteres");
+      toast.error("Contraseña débil", "La contraseña debe tener al menos 8 caracteres");
       return
     }
 
@@ -74,14 +74,14 @@ export default function Register() {
 
     try {
 
-      const response = await axios.post("http://localhost:3001/api/register", {
+      await axios.post("http://localhost:3001/api/register", {
         name: name,
         email: email,
         phone: phone,
         password: password
 
       });
-
+      toast.success('Usuario Registra')
       navigate('/Login')
 
     } catch (err) {

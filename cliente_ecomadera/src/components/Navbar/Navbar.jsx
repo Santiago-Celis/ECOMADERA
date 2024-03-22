@@ -24,7 +24,11 @@ import Logo from '../../assets/LOGO.png'
 
 function Navbar() {
 
-    const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);;
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+    
+
+  
+
 
     useEffect(() => {
       localStorage.setItem("cart", JSON.stringify(cart));

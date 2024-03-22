@@ -17,19 +17,21 @@ export default function Login() {
   const [email, setEmail] = useState('')
 
 
-  const handleLogin = async (e) =>{
+
+
+  const handleLogin = async (e) => {
     e.preventDefault();
-    
-    if( !email || !password ){
+
+    if (!email || !password) {
       toast.error("Todos los campos son obligatorios")
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+.[^\s@]+$/;
-    if( !emailRegex.test(email)){
+    if (!emailRegex.test(email)) {
       toast.error(error, "Ingresa una direccion de correo valida")
     }
-    
+
     try {
       const response = await fetch('http://localhost:3001/api/login', {
         method: "POST",
@@ -37,26 +39,72 @@ export default function Login() {
           "Content-Type": "application/JSON",
         },
         body: JSON.stringify({
-          email:email,
+          email: email,
           password: password
         }),
       })
-      .then(response => response.json())
-      .then(data => {
-        if(data.token){
-          sessionStorage.setItem('token', data.token)
+        .then(response => response.json())
+        .then(data => {
+
+          function parseJwt(token) {
+            var base64Url = token.split('.')[1]; // Obtén el payload del token
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Reemplaza los caracteres URL-safe con los caracteres base64 estándar
+            var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+              return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join('')); // Decodifica base64 y luego decodifica URI
+
+            return JSON.parse(jsonPayload); // Convierte la cadena JSON en un objeto
+          }
+
+          console.log('Respuesta del servidor:', data);
+          console.log(data.data.token); // Para ver qué estás recibiendo exactamente del servidor
+          console.log(data.payload); // Para ver qué estás recibiendo exactamente del servidor
+          if (data.data.token) {
+            sessionStorage.setItem('token', data.data.token);
+            console.log('Token guardado en sessionStorage.');
+
+            const payload = parseJwt(data.data.token);
+            console.log('Payload decodificado:', data.data.payload); // Para verificar el contenido del payload
+
+            if (data.data.payload.rol === 2) {
+              console.log('Redirigiendo a /admin');
+              navigate('/admin');
+            } else {
+              console.log('Redirigiendo a /');
+              navigate('/');
+            }
+          } else {
+            console.log('No se recibió token en la respuesta.');
+            navigate('/login');
+          }
+        })
+        .catch(error => {
+          console.error('Error durante el login:', error);
+          navigate('/login');
+        });
+
+
+      /* if (!response.ok) {
+        throw new Error("Error en el servidor");
+      }
+
+      const data = await response.json();
+
+      if (data.token) {
+        sessionStorage.setItem('token', data.token);
+        const payload = parseJwt(data.token);
+        console.log(data);
+        if (payload.rol === 2) {
+          navigate('/admin');
+        }else{
           navigate('/')
         }
-      })
 
-      console.log(response);
-      /* const endpoint = await axios.post('http://localhost:3001/api/login', {
-        email,
-        password
-      });
+      } */
 
-      navigate('/') */
-      
+
+      /* navigate('/') */
+
     } catch (error) {
       console.log(error);
       toast.error("Error", "Ha ocurrido un error")
@@ -69,44 +117,44 @@ export default function Login() {
     <>
       <div className={styles.contenedor}>
         <div className={styles.formulario}>
-        
-        <form className={styles.form}>
+
+          <form className={styles.form}>
             <h1 className={styles.Titulo}>ECO MADERA</h1>
             <div className={styles.campo}>
-                <span className={styles.span} >Ingresa tu correo</span>
-                <input 
-                  className={styles.input} 
-                  value={email}  
-                  name='email' 
-                  placeholder='Correo' 
-                  onChange={(e) => setEmail(e.target.value)}
-                />
+              <span className={styles.span} >Ingresa tu correo</span>
+              <input
+                className={styles.input}
+                value={email}
+                name='email'
+                placeholder='Correo'
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
             <div className={styles.campo}>
-                <span className={styles.span}  >Ingresa tu contraseña</span>
-                <input
-                  className={styles.input} 
-                  value={password} 
-                  type='password' name='password' 
-                  placeholder='Contraseña' 
-                  onChange={(e) => setPassword(e.target.value)}
-                  />
+              <span className={styles.span}  >Ingresa tu contraseña</span>
+              <input
+                className={styles.input}
+                value={password}
+                type='password' name='password'
+                placeholder='Contraseña'
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </div>
             <Link to='/#' style={{ color: 'white' }} >
-                <p>¿Olvidaste tu contraseña?</p>
-              </Link>
+              <p>¿Olvidaste tu contraseña?</p>
+            </Link>
             <Link to='/register' style={{ color: 'white' }}>
-                <p>Crea una cuenta</p>
-              </Link>
-            
-            <button type='submit' onClick={handleLogin} className={styles.boton} ><FaArrowCircleRight style={{ fontSize: '100' }}/></button>
-        </form>
+              <p>Crea una cuenta</p>
+            </Link>
+
+            <button type='submit' onClick={handleLogin} className={styles.boton} ><FaArrowCircleRight style={{ fontSize: '100' }} /></button>
+          </form>
 
 
         </div>
-          <img src={mueble} alt="" />
-        
-        </div>
+        <img src={mueble} alt="" />
+
+      </div>
 
       <Toaster
         position="top-center"

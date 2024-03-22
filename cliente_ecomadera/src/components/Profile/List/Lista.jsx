@@ -56,6 +56,7 @@ export default function BasicTable() {
   
 
   const columns = [
+    
     { 
       id: 'name', 
       label: 'Nombre',
@@ -73,12 +74,26 @@ export default function BasicTable() {
       align: 'left', 
       minWidth: 150 
     },
-    { 
-      id: 'Acciones',
+    {
+      id: 'accion',
       label: 'Acciones',
-      align: 'left', 
-      minWidth: 150, 
-    },
+      width: 100,
+      renderCell: (params) => (
+        <TableCell align="center">
+          <Tooltip title="Editar">
+            <IconButton>
+              <AppRegistrationOutlinedIcon color="primary" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Eliminar">
+            <IconButton>
+              <BsTrash3 color="error" />
+            </IconButton>
+          </Tooltip>
+        </TableCell>
+      ),
+    },
+  ,
   ];
 
   return (
@@ -120,12 +135,14 @@ export default function BasicTable() {
                       const value = data[column.id];
                       return (
                         <TableCell key={column.id} /* align={column.align} */>
+                          
                           {column.format && typeof value === 'number'
                             ? column.format(value)
                             : value }
-                            
+                           
                         </TableCell>
                       );
+                       
                     })}
                   </TableRow>
                 );

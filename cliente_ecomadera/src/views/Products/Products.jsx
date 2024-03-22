@@ -34,27 +34,27 @@ function Products() {
   
 
   const endPoint = 'http://localhost:3001/products/products';
+  const endPointCategory = 'http://localhost:3001/category/categories';
 
   const [data, setData] = useState([]);
   const [product, setProduct] = useState([]);
-  
-  const [filter, setFilter] = useState('');
+  const [obtenerCategoria, setObtenerCategoria] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+  
+  
+  const getCategoria = async () => {
+    try {
+      const category = await axios.get(`${endPointCategory}`)
+      setObtenerCategoria(category.data)
+      console.log(category.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-
-
-  const handleFilter = async () => {
-    const { filtro } = await axios.get('/category/categories', {
-      params:
-      { filter },
-    });
-    
-    if (filtro) {
-      setData(filtro);
-    } else {
-      getAllProducts();
-    };
-  };
+  useEffect(() => {
+    getCategoria()
+  }, [])
 
   const getData = async () => {
     try {
@@ -80,7 +80,21 @@ function Products() {
     console.log(cart);
   }, [cart])
 
-  
+  const filtro = () => {
+    const [filterCategory, setFilterCategory] = useState('todos');
+
+    const handleCategoryChange = (e) => {
+      setFilterCategory(e.target.value);
+    };
+
+    const filterProducts = data.filter((product) => {
+      if(filterCategory ==='todos'){
+        return true;
+      }
+      return data.categoryId === filterCategory;
+    })
+
+  }
   
   
 
@@ -151,13 +165,11 @@ function Products() {
             alignItems: '',
             height: 'fit-content',
             flexWrap:'wrap',
-            flexDirection:'row'
+            flexDirection:'row',
+            height:'5em'
         }}>
-
-        <Typography variant="h1" color="initial"></Typography>
-        <Typography variant="h1" color="initial"></Typography>
-        <Typography variant="h1" color="initial"></Typography>
-        <Typography variant="h1" color="initial"></Typography>
+        
+        
 
     </Box>
         
@@ -174,6 +186,9 @@ function Products() {
         }} >
 
       <Grid container spacing={{ xs: 2, md: -5, }} columns={{ xs: 5, sm: 4 }} sx={{ gap: '5em' }}>
+      {obtenerCategoria.map((category, i) => {
+          <TextField>{category.name}</TextField>
+        })}
         {data.map((product, idx) => (
           <Grid  key={product.id}>
             <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
