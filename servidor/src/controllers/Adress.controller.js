@@ -11,9 +11,10 @@ export const createAddress = async ( req, res ) => {
             UserId
         });
 
-        const addressSaved = await newAddress;
+        const addressSaved = newAddress;
         res.status(201).json(addressSaved)
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: error.message })
     }
 

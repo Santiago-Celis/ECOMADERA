@@ -36,16 +36,17 @@ function Products() {
   const endPoint = 'http://localhost:3001/products/products';
   const endPointCategory = 'http://localhost:3001/category/categories';
 
+
   const [data, setData] = useState([]);
   const [product, setProduct] = useState([]);
-  const [obtenerCategoria, setObtenerCategoria] = useState([]);
+  const [category, setCategory] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
   
   
-  const getCategoria = async () => {
+  const getCategory = async () => {
     try {
-      const category = await axios.get(`${endPointCategory}`)
-      setObtenerCategoria(category.data)
+      const category = await axios.get(`${endPointCategory}`);
+      setCategory(category.data)
       console.log(category.data);
     } catch (error) {
       console.log(error);
@@ -53,9 +54,9 @@ function Products() {
   }
 
   useEffect(() => {
-    getCategoria()
+    getCategory();
   }, [])
-
+  
   const getData = async () => {
     try {
       const response = await axios.get(endPoint, {
@@ -63,12 +64,14 @@ function Products() {
         {'Authorization': 'Bearer '+ sessionStorage.getItem('token')}
       });
       setData(response.data)
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
-
   
+  
+
   useEffect(() => {
     getData();
     localStorage.getItem("cart") === null ? setCart([]) : setCart(JSON.parse(localStorage.getItem("cart")))
@@ -80,7 +83,7 @@ function Products() {
     console.log(cart);
   }, [cart])
 
-  const filtro = () => {
+  /* const filtro = () => {
     const [filterCategory, setFilterCategory] = useState('todos');
 
     const handleCategoryChange = (e) => {
@@ -92,7 +95,7 @@ function Products() {
         return true;
       }
       return data.categoryId === filterCategory;
-    })
+    }) */
 
   }
   
@@ -139,56 +142,21 @@ function Products() {
 
 
 
-      <Box
-        sx={{
-            display: 'flex',
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 2,
-            bgcolor: 'background.paper',
-            color: 'text.secondary',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-            height: 'fit-content',
-            gap: 10,
-            flexDirection: 'column'
-        }}>
-
-<Box
-        sx={{
-            display: 'flex',
-            width: '50%',
-            borderRadius: 2,
-            bgcolor: 'background.paper',
-            color: 'text.secondary',
-            justifyContent: 'space-evenly',
-            alignItems: '',
-            height: 'fit-content',
-            flexWrap:'wrap',
-            flexDirection:'row',
-            height:'5em'
-        }}>
+      
         
         
-
-    </Box>
-        
-    <Box
-        sx={{
-            display: 'flex',
-            flexGrow: 1,
-            justifyContent: 'center',
-            borderRadius: 2,
-            color: 'text.secondary',
-            height: '100%',
-            padding: '0px 0em',
-            width: '100%',
-        }} >
-
-      <Grid container spacing={{ xs: 2, md: -5, }} columns={{ xs: 5, sm: 4 }} sx={{ gap: '5em' }}>
-      {obtenerCategoria.map((category, i) => {
-          <TextField>{category.name}</TextField>
+        <ul>
+        {category.map((category) => {
+            <li>
+            <Typography variant="body2" color="initial" sx={{ fontSize: '30em' }}>
+              {category.name}
+            </Typography>
+            </li>
         })}
+        </ul>
+        
+  
+      <Grid container /* spacing={{ xs: 4, md: 0, }} */ columns={{ xs: 5, sm: 4 }} sx={{ gap: '2em' }}>
         {data.map((product, idx) => (
           <Grid  key={product.id}>
             <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
@@ -218,10 +186,10 @@ function Products() {
       </Grid>
 
 
-      </Box>
+      
 
 
-    </Box>
+    
     
           <Footer/>
 

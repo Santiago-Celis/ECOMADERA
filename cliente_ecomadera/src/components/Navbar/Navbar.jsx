@@ -67,6 +67,7 @@ function Navbar() {
     try {
       const response = await fetch('http://localhost:3001/api/logout')
       sessionStorage.removeItem('token');
+      sessionStorage.removeItem('id');
       navigate('/Login')
       
     } catch (error) {
@@ -80,7 +81,7 @@ function Navbar() {
        <div>
       <div className={styles.General}>
 
-        <Link to ="/" className={styles.Link} >
+        <Link to ="/Main" className={styles.Link} >
           <img src={Logo} alt="" className={styles.Logo} />
         </Link>
 

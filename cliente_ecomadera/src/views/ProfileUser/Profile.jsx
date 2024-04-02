@@ -1,5 +1,5 @@
 import React from 'react'
-import Lista from '../../components/Profile/List/Lista'
+import Lista from '../../components/Profile/ProductList/Lista'
 import { Link, NavLink, Route, Routes } from 'react-router-dom'
 import { Box } from '@mui/material'
 import List from '@mui/material/List'

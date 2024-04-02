@@ -21,7 +21,7 @@ const upload = multer({ storage: storage })
 router.post('/newProduct', upload.single('image') ,/* requiredAuth */ /* checkoutRol([2]) , */createProduct);
 router.get('/products', authenticateToken, getProducts);
 router.get('/product/:id', getProduct);
-router.get('/productCategory/:categoryId', getProductCategory);
+router.get('/getProductByCategory/:categoryId', getProductCategory);
 router.put('/editProduct/:id',upload.single("image")  ,updateProduct);
 router.delete('/deleteProduct/:id', deleteProduct);
 

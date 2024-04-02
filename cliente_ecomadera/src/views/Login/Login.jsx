@@ -66,6 +66,9 @@ export default function Login() {
             const payload = parseJwt(data.data.token);
             console.log('Payload decodificado:', data.data.payload); // Para verificar el contenido del payload
 
+            const id = data.data.payload._id
+            sessionStorage.setItem("id", id)
+
             if (data.data.payload.rol === 2) {
               console.log('Redirigiendo a /admin');
               navigate('/admin');

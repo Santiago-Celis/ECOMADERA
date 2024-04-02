@@ -53,8 +53,6 @@ export const getProduct = async (req, res) => {
 export const getProductCategory = async (req, res) => {
 
     const categoria = req.params.categoryId
-
-    
     const producto = await Product.findAll({where: { categoryId: categoria }});
     res.json(producto)
 

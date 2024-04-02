@@ -1,45 +1,51 @@
-import { MercadoPagoConfig, Preference } from "mercadopago"
-
-const client = new MercadoPagoConfig({
-    accessToken:
-    "TEST-3216132055254219-031621-17a3ceab979aabfafa4665f941df50b2-1729083873"
-})
-
-
-
+import mercadopago, { MercadoPagoConfig, Preference } from 'mercadopago'
 
 export const createOrder = async (req,res) => {
     try {
-        const {cart} = localStorage.getItem("cart")
 
+        const client = new MercadoPagoConfig({
+            access_token:
+            "TEST-3216132055254219-031621-17a3ceab979aabfafa4665f941df50b2-1729083873",
+        })
 
-        if (!cart.product.name || !cart.product.quantity ) {
-            return res
-            .status(400)
-            .send({ error: "Faltan campos obligatorios: monto o titulo" })
-        }
+        const preference = new Preference(client)
 
-        const productos = cart.map((product) => {
-            return {
-                title: cart.product.name,
-                unit_price: Number(cart.product.price),
-                currency_id: "COL",
-                quantity: Number(cart.product.quantity)
-            };
-        });
+        const result = await preference.create({
+            body: {
+                items: [{
+                    title: "Mesa",
+                    unit_price: 5000,
+                    currency_id: 'COL',
+                    quantity: 1,
+                }],
+            }
+        })
 
-        const body = {
-            items: productos,
+        console.log(result);
+        res.send("creando orden")
+
+        /* const body = {
+            items: [{
+                title: "Mesa",
+                unit_price: 5000,
+                currency_id: 'COL',
+                quantity: 1,
+            }],
             back_urls: {
-                success: "http://localhost:3001/success",
-                failure: "http://localhost:3001/failure",
-                pending: "http://localhost:3001/pending",
+                success: "https://github.com/Santiago-Celis/Ecomadera",
+                failure: "https://github.com/Santiago-Celis/Ecomadera",
+                pending: "https://github.com/Santiago-Celis/Ecomadera",
             },
+
+            auto_return: "approved",
         };
 
         const preference = new Preference(client);
-        const result =await preference.create({ body });
-        res.status(200).json({ id: result.id, init_point: result.init_point });
+        const result = await preference.create({body});
+        res.json({ 
+            id: result.id
+         }) */
+        
     } catch (error) {
         console.error("Error al crear el pago:", error);
         return res.status(500).send({ error: "Ocurrió un error inesperado" })

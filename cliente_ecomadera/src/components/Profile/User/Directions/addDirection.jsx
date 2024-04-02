@@ -7,10 +7,11 @@ import axios from 'axios';
 function AddDirection() {
   const navigate = useNavigate();
 
-  const [departamento, setDepartamento] = useState('');
-  const [ciudad, setCiudad] = useState('');
-  const [direccion, setDireccion] = useState('');
-  const [departamentos, setDepartamentos] = useState([]);
+  const [Department, setDepartment] = useState('');
+  const [City, setCity] = useState('');
+  const [Direccion, setDireccion] = useState('');
+  const [Departments, setDepartments] = useState([]);
+  const [UserId, setUserId] = useState(parseInt(sessionStorage.getItem('id')));
   const [usuario, setUsuario] = useState('')
   const [ciudadesPorDepartamento, setCiudadesPorDepartamento] = useState({});
 
@@ -27,7 +28,7 @@ function AddDirection() {
         });
 
 
-        setDepartamentos(departamentos);
+        setDepartments(departamentos);
         setCiudadesPorDepartamento(ciudadesPorDepartamento);
       } catch (error) {
         console.error('Error al obtener los datos:', error);
@@ -41,22 +42,31 @@ function AddDirection() {
 
   const handleDepartamentoChange = (e) => {
     const selectedDepartamento = e.target.value;
-    setDepartamento(selectedDepartamento);
-    setCiudad('');
+    setDepartment(selectedDepartamento);
+    setCity('');
   };
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    
-    
-    
+
       const token = sessionStorage.getItem('token');
+
+      /* function parseJwt(token) {
+        var base64Url = token.split('.')[1]; // Obtén el payload del token
+        var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'); // Reemplaza los caracteres URL-safe con los caracteres base64 estándar
+        var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join('')); // Decodifica base64 y luego decodifica URI
+
+        return JSON.parse(jsonPayload); // Convierte la cadena JSON en un objeto
+      } */
+
       const formulario = new FormData(e.currentTarget);
     
-      formulario.append('City', ciudad);
-      formulario.append('Department', departamento);
-      formulario.append('Direccion', direccion);
-      formulario.append('UserId', token);
+      formulario.append('City', City);
+      formulario.append('Department', Department);
+      formulario.append('Direccion', Direccion);
+      formulario.append('UserId', UserId)
     
       for (let [key, value] of formulario.entries()) {
         console.log(key, value);
@@ -65,7 +75,7 @@ function AddDirection() {
 
 
 
-    if (!departamento || !ciudad || !direccion) {
+    if (!Department || !City || !Direccion) {
       toast.error('Rellenar todos los campos es necesario')
     }
 
@@ -74,24 +84,22 @@ function AddDirection() {
 
       const config = {
         headers: {
+          'Content-Type': 'multipart/form-data',
           'Authorization': `Bearer ${ token }`
     }
 };
 
-      axios.post(url, formulario, config)
-        .then(response => {
-          console.log('Éxito:', response.data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
-        });
-
+      const respuesta = await axios.post(url, formulario, config )
+        
+      console.log("Exito: " + respuesta);
+        
+        
       }catch(error){
         console.log(error);
       }
     };
-    console.log('Datos del formulario:', { departamento, ciudad, direccion });
     
+    console.log('Datos del formulario:', { Department, City, Direccion, UserId });
     
 return (
   <div>
@@ -103,12 +111,12 @@ return (
           <select
             id="departamento"
             name='Department'
-            value={departamento}
+            value={Department}
             onChange={handleDepartamentoChange}
             required
           >
             <option value="">Seleccione un departamento</option>
-            {departamentos.map((depto, index) => (
+            {Departments.map((depto, index) => (
               <option key={index} value={depto}>{depto}</option>
             ))}
           </select>
@@ -118,25 +126,37 @@ return (
           <select
             id="ciudad"
             name='City'
-            value={ciudad}
-            onChange={(e) => setCiudad(e.target.value)}
+            value={City}
+            onChange={(e) => setCity(e.target.value)}
             required
-            disabled={!departamento}
+            disabled={!Department}
           >
             <option value="">Seleccione una ciudad</option>
-            {ciudadesPorDepartamento[departamento] && ciudadesPorDepartamento[departamento].map((ciudad, index) => (
-              <option key={index} value={ciudad}>{ciudad}</option>
+            {ciudadesPorDepartamento[Department] && ciudadesPorDepartamento[Department].map((City, index) => (
+              <option key={index} value={City}>{City}</option>
             ))}
           </select>
         </div>
         <div className={styles.campo}>
-          <label className={styles.label} htmlFor="direccion">Dirección</label>
+          <label className={styles.label} htmlFor="Direccion">Dirección</label>
           <input
             type="text"
             name='Direccion'
-            id="direccion"
-            value={direccion}
+            id="Direccion"
+            value={Direccion}
             onChange={(e) => setDireccion(e.target.value)}
+            required
+            className={styles.input}
+
+          />
+        </div>
+        <div className={styles.campo}>
+          <input
+            style={{ display:'none' }}
+            name='UserId'
+            id="userId"
+            value={UserId}
+            onChange={()=>{}}  //No se usa por que el valor de UserID es tomado desde el session storage
             required
             className={styles.input}
 

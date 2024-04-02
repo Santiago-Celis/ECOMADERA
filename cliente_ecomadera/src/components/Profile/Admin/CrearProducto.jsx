@@ -30,6 +30,11 @@ function CrearProducto() {
     const [categoria, setCategoria] = useState('');
     const [errors, setErrors] = useState({});
 
+    const handleEditProduct = async (id) => {
+        const formulario = new FormData(); 
+    }
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};

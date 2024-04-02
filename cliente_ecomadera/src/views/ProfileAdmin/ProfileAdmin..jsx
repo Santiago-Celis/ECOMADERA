@@ -7,9 +7,11 @@ import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import CrearProducto from '../../components/Profile/Admin/CrearProducto.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import ActualizarProducto from '../../components/Profile/Admin/ActualizarProducto.jsx';
-import Lista from '../../components/Profile/List/Lista.jsx';
+import Lista from '../../components/Profile/ProductList/Lista.jsx';
 import Admin from '../../components/Profile/Admin/UserAdmin.jsx';
 import CrearCategoria from '../../components/Profile/Admin/CrearCategoria.jsx';
+import ListaCategoria from '../../components/Profile/Admin/ListaCategoria.jsx';
+import CrearAdmin from '../../components/Profile/Admin/CrearAdmin.jsx';
 
 
 const lista = {
@@ -64,6 +66,13 @@ function ProfileAdmin() {
               </ListItemButton>
             </ListItem>
           </Link>
+          <Link to={'createAdmin'}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ borderBottom: '2px solid #906040' }}>
+                <ListItemText primary="Crear Admin" />
+              </ListItemButton>
+            </ListItem>
+          </Link>
           <Link to={'productos'}>
             <ListItem disablePadding>
               <ListItemButton sx={{ borderBottom: '2px solid #906040' }}>
@@ -81,7 +90,15 @@ function ProfileAdmin() {
           <Link to={'createCategory'}>
             <ListItem disablePadding>
               <ListItemButton sx={{ borderBottom: '2px solid #906040' }}>
-                <ListItemText primary="Crear Categoria" />
+                <ListItemText primary="Crear Categoria
+                " />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <Link to={'categories'}>
+            <ListItem disablePadding>
+              <ListItemButton sx={{ borderBottom: '2px solid #906040' }}>
+                <ListItemText primary="Categorias" />
               </ListItemButton>
             </ListItem>
           </Link>
@@ -91,9 +108,11 @@ function ProfileAdmin() {
           <Routes>
             <Route path='/' element={<CrearProducto />} />
             <Route path='/productos' element={<Lista />} />
+            <Route path='/createAdmin' element={<CrearAdmin/>} />
             <Route path='/createProduct' element={<CrearProducto />} />
             <Route path='/updateProduct' element={<ActualizarProducto />} />
             <Route path='/UserAdmin' element={<Admin />} />
+            <Route path='/categories' element={<ListaCategoria/>} />
             <Route path='/createCategory' element={<CrearCategoria/>} />
           </Routes>
         </Box>

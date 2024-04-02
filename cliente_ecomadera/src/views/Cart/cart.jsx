@@ -12,28 +12,13 @@ import { useEffect } from 'react'
 
 import { initMercadoPago, Wallet } from '@mercadopago/sdk-react'
 import { Blanco, Cafe, Gris } from '../../Colors'
+import { MercadoPagoInstance } from '@mercadopago/sdk-react/mercadoPago/initMercadoPago'
 
 
 function cart() {
 
   const [redirectUrl, setRedirectUrl] = useState();
-
-  const [ preferenceId, setPreferenceId ] = useState(null)
-  initMercadoPago('TEST-81c76e7f-b45f-43e6-b753-937b96286f50', {
-    locale: "es-CO"
-  });
   
-
-  const createPreference = async (amount, name) => {
-    try {
-      const response = await axios.post('http://localhost:3001/payment/create_Order')
-
-      
-
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
 
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
@@ -141,8 +126,8 @@ function cart() {
           <Typography variant='h5' color="brown">
             Precio Total: $ {totalPrice}
           </Typography>
-          {<Button size="large" /* onClick={() => createPreference(cart.length, cart.name)} */ sx={{ width: '100%', height: 'auto', background:Cafe[500], color:'black' }}>COMPRAR</Button>}
-          <Wallet initialization={{ preferenceId: "<PREFERENCE_ID>" }}/>
+          <Button id='checkout-btn' >Comprar</Button>
+          <div id="wallet_container"></div>
         </Paper>
 
 

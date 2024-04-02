@@ -1,0 +1,8 @@
+.Borrar:hover{
+    color: red;
+    transition: ease-in 250ms;
+}
+
+.Borrar{
+    transition: ease-out 500ms;
+}
