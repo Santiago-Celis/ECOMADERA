@@ -17,7 +17,12 @@ import  PropTypes  from 'prop-types';
 import clsx from 'clsx';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
+import {FormControl} from '@mui/material';
+import {InputLabel} from '@mui/material';
+import {Select} from '@mui/material';
+
 import axios from 'axios';
+
 
 import mesa from '../../assets/mesa.jpg';
 import Navbar from '../../components/Navbar/Navbar';
@@ -41,7 +46,7 @@ function Products() {
   const [product, setProduct] = useState([]);
   const [category, setCategory] = useState([]);
   const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
-  
+  const [seleccionCategoria, setSeleccionCategoria] = useState(parseInt(''))
   
   const getCategory = async () => {
     try {
@@ -97,7 +102,7 @@ function Products() {
       return data.categoryId === filterCategory;
     }) */
 
-  }
+  
   
   
 
@@ -133,7 +138,15 @@ function Products() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  
+  function filtrarDatos(data) {
+    if(!seleccionCategoria || seleccionCategoria == 'todos'){
+        return data;
+    }
+
+    return data.filter(product => product.categoryId === seleccionCategoria)
+  }
+
+  const categoriasFiltradas = filtrarDatos(data)
 
   return (
     <>
@@ -141,7 +154,21 @@ function Products() {
       <Navbar/>
 
 
-
+          <FormControl sx={{ margin:'3em' }}>
+              <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
+              <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value='todos'
+                  label="Categoria"
+                  onChange={(e) => setSeleccionCategoria(e.target.value)}
+              >
+                  <MenuItem value={'todos'}>Todos</MenuItem>
+                  {category.map((category, idx) => (
+                    <MenuItem  key={idx} value={category.id}>{category.name}</MenuItem>
+                  ))}
+              </Select>
+          </FormControl>
       
         
         
@@ -157,7 +184,7 @@ function Products() {
         
   
       <Grid container /* spacing={{ xs: 4, md: 0, }} */ columns={{ xs: 5, sm: 4 }} sx={{ gap: '2em' }}>
-        {data.map((product, idx) => (
+        {categoriasFiltradas.map((product, idx) => (
           <Grid  key={product.id}>
             <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
       <CardMedia
