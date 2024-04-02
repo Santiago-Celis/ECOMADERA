@@ -1,14 +1,15 @@
 import { Router } from "express";
-const router = Router();
-
-import { requiredAuth } from "../middlewares/tokenValidation.js";
 import { createAddress, deleteAddress, getAddress, getAddresses, updateAddress } from "../controllers/Adress.controller.js";
 import { authenticateToken } from "../middlewares/generateToken.js";
+import { validateSchema } from "../middlewares/validateSchema.js";
+import { addressSchema } from "../schemas/addressSchema.js";
 
-router.post('/newAddress', authenticateToken, createAddress);
-router.get('/Addresses', /* requiredAuth, */ getAddresses);
-router.get('/Address/:id', requiredAuth, getAddress);
-router.put('/updateAddress/:id', requiredAuth, updateAddress);
-router.delete('/deleteAddress/:id', requiredAuth, deleteAddress);
+const router = Router();
+
+router.post('/newAddress', authenticateToken, validateSchema(addressSchema), createAddress);
+router.get('/Addresses', getAddresses);
+router.get('/Address/:id', getAddress);
+router.put('/updateAddress/:id', validateSchema(addressSchema), updateAddress);
+router.delete('/deleteAddress/:id', deleteAddress);
 
 export default router;
