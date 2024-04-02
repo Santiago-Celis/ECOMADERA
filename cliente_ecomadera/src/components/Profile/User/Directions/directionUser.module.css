@@ -6,6 +6,7 @@
     flex-direction: column;
     justify-content: center;
     height: 450px; 
+    text-align: center;
   }
   
   .noDirecciones {

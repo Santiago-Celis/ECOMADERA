@@ -69,9 +69,8 @@ export default function Login() {
     <>
       <div className={styles.contenedor}>
         <div className={styles.formulario}>
-        
         <form className={styles.form}>
-            <h1 className={styles.Titulo}>ECO MADERA</h1>
+        <h1 className={styles.Titulo}>ECO MADERA</h1>
             <div className={styles.campo}>
                 <span className={styles.span} >Ingresa tu correo</span>
                 <input 

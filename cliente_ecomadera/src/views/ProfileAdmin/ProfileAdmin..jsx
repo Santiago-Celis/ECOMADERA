@@ -2,14 +2,13 @@ import React, { useState } from 'react';
 import './ProfileAdmin.module.css';
 import { Link, Route, Routes } from 'react-router-dom';
 import Navbar from '../../components/Navbar/Navbar.jsx';
-import { Box } from '@mui/material';
+import { Box, useMediaQuery, useTheme } from '@mui/material';
 import { List, ListItem, ListItemButton, ListItemText } from '@mui/material';
 import CrearProducto from '../../components/Profile/Admin/CrearProducto.jsx';
 import Footer from '../../components/Footer/Footer.jsx';
 import ActualizarProducto from '../../components/Profile/Admin/ActualizarProducto.jsx';
 import Lista from '../../components/Profile/List/Lista.jsx';
 import Admin from '../../components/Profile/Admin/UserAdmin.jsx';
-
 
 const lista = {
   p: 0,
@@ -34,20 +33,24 @@ function ProfileAdmin() {
     console.log('Datos del formulario:', { nombre, precio, descripcion, alto, ancho, profundidad, imagen });
   };
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
     <>
       <Navbar />
       <Box
         sx={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row', // Cambiar la dirección de la columna a la fila si es móvil
           alignItems: 'center',
           border: '1px solid',
           borderColor: 'divider',
           borderRadius: 2,
           bgcolor: 'background.paper',
           color: 'text.secondary',
-          justifyContent: 'space-evenly',
-          height: '50em'
+          height: '100%',
+          padding: '20px',
         }}
       >
         <List sx={lista} aria-label="mailbox folders">
@@ -79,7 +82,7 @@ function ProfileAdmin() {
           </Link>
         </List>
 
-        <Box sx={{ height:'fit-content' }}>
+        <Box sx={{ height: '100%', width: '100%' }}>
           <Routes>
             <Route path='/' element={<CrearProducto />} />
             <Route path='/productos' element={<Lista />} />
@@ -89,8 +92,6 @@ function ProfileAdmin() {
           </Routes>
         </Box>
       </Box>
-
-      
     </>
   );
 }

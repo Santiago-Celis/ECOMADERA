@@ -12,8 +12,6 @@ import arbol from '../../assets/Main/arbolIcon.png'
 import camion from '../../assets/Main/entrega.png'
 import mueblec from '../../assets/Main/muebleC.jpg' 
 
-/* import mueble from '../../assets/Main/muebleC.jpg' */
-
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Footer from '../../components/Footer/Footer.jsx'
 
@@ -23,7 +21,7 @@ function Main() {
       <Navbar/>
       <div className={styles.general}>
         <div className={styles.texto}>
-          <p>Acá encontraras todos los muebles que necesitas para tu hogar.</p>
+          <p>Acá encontrarás todos los muebles que necesitas para tu hogar.</p>
         </div>
 
         <div className={styles.nose}>
@@ -55,7 +53,7 @@ function Main() {
         </div>
         <div className={styles.Citem}>
           <img src={camion} alt="" className={styles.Icono} />
-          <p>Entrega confiable y rapida</p>
+          <p>Entrega confiable y rápida</p>
         </div>
       </div>
 
@@ -80,4 +78,4 @@ function Main() {
   )
 }
 
-export default Main
+export default Main;
