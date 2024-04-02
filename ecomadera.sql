@@ -18,59 +18,6 @@ USE `ecomadera`;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `actions`
---
-
-DROP TABLE IF EXISTS `actions`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `actions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `actions`
---
-
-LOCK TABLES `actions` WRITE;
-/*!40000 ALTER TABLE `actions` DISABLE KEYS */;
-/*!40000 ALTER TABLE `actions` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `actionsrol`
---
-
-DROP TABLE IF EXISTS `actionsrol`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `actionsrol` (
-  `created_at` datetime NOT NULL,
-  `updated_at` datetime NOT NULL,
-  `rol_id` int NOT NULL,
-  `action_id` int NOT NULL,
-  PRIMARY KEY (`rol_id`,`action_id`),
-  KEY `action_id` (`action_id`),
-  CONSTRAINT `actionsrol_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `actionsrol_ibfk_2` FOREIGN KEY (`action_id`) REFERENCES `actions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `actionsrol`
---
-
-LOCK TABLES `actionsrol` WRITE;
-/*!40000 ALTER TABLE `actionsrol` DISABLE KEYS */;
-/*!40000 ALTER TABLE `actionsrol` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `address`
 --
 
@@ -86,7 +33,7 @@ CREATE TABLE `address` (
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `address_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -95,7 +42,7 @@ CREATE TABLE `address` (
 
 LOCK TABLES `address` WRITE;
 /*!40000 ALTER TABLE `address` DISABLE KEYS */;
-INSERT INTO `address` VALUES (3,NULL,NULL,NULL,NULL),(4,NULL,NULL,NULL,NULL);
+INSERT INTO `address` VALUES (8,'Antioquia','Rionegro','Calle17a #76a38',3),(19,'Antioquia','Medellin','Calle17a #76a38',3);
 /*!40000 ALTER TABLE `address` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -113,7 +60,7 @@ CREATE TABLE `category` (
   `updated_at` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -180,7 +127,7 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `product_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -189,7 +136,7 @@ CREATE TABLE `product` (
 
 LOCK TABLES `product` WRITE;
 /*!40000 ALTER TABLE `product` DISABLE KEYS */;
-INSERT INTO `product` VALUES (16,'Mesa',20,10,40,'Mesa parqa pruebas de manejo de imagenes',2,10000,'Carta2.jpg','2024-03-14 19:10:02','2024-03-14 19:10:02'),(17,'Mueble',50,20,60,'Mueble para pruebas de manejo de imagenes',2,50000,'Carta1.jpg','2024-03-14 19:10:50','2024-03-14 19:10:50'),(18,'Cama',50,20,60,'Cama para pruebas de manejo de imagenes y carrito',2,50000,'prueba.jpg','2024-03-15 23:05:01','2024-03-15 23:05:01'),(19,'Silla Gamer',140,50,60,'Silla Gamer ideal para largas sesiones de juego, comoda y visualmente estetica',1,10000,'Sala3.jpg','2024-03-17 16:15:37','2024-03-17 16:15:37'),(20,'Cama Queen',120,210,190,'Cama de tamaño queen perfecta para parejas',5,10000,'CamaQueen.jpg','2024-03-17 16:34:43','2024-03-17 16:34:43'),(21,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:02','2024-03-17 21:16:02'),(22,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:04','2024-03-17 21:16:04'),(23,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:04','2024-03-17 21:16:04'),(24,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:04','2024-03-17 21:16:04'),(25,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:04','2024-03-17 21:16:04'),(26,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:05','2024-03-17 21:16:05'),(27,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:05','2024-03-17 21:16:05'),(28,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:05','2024-03-17 21:16:05'),(29,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:05','2024-03-17 21:16:05'),(30,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:06','2024-03-17 21:16:06'),(31,'Escritorio',150,120,60,'Escritorio',5,4000,'prueba.jpg','2024-03-17 21:20:17','2024-03-17 21:20:17'),(32,'Escritorio',150,120,60,'Escritorio',5,5000,'prueba.jpg','2024-03-17 21:20:38','2024-03-17 21:20:38'),(33,'fghj',6789,567,56789,'bjkm',2,0,'DI.png','2024-03-18 07:29:36','2024-03-18 07:29:36');
+INSERT INTO `product` VALUES (16,'Mesa',20,10,40,'Mesa parqa pruebas de manejo de imagenes',2,10000,'Carta2.jpg','2024-03-14 19:10:02','2024-03-14 19:10:02'),(17,'Mueble',50,20,60,'Mueble para pruebas de manejo de imagenes',2,50000,'Carta1.jpg','2024-03-14 19:10:50','2024-03-14 19:10:50'),(18,'Cama',50,20,60,'Cama para pruebas de manejo de imagenes y carrito',2,50000,'prueba.jpg','2024-03-15 23:05:01','2024-03-15 23:05:01'),(20,'Cama Queen',120,210,190,'Cama de tamaño queen perfecta para parejas',5,10000,'CamaQueen.jpg','2024-03-17 16:34:43','2024-03-17 16:34:43'),(22,'Mesita',120,60,60,'Mesita',2,5000,'MesaDeNoche.jpg','2024-03-17 21:16:04','2024-03-17 21:16:04'),(31,'Escritorio',150,120,60,'Escritorio',5,4000,'prueba.jpg','2024-03-17 21:20:17','2024-03-17 21:20:17'),(34,'Silla de Cuero',120,80,80,'Silla de cuero cómoda especial para comedores rusticos',1,50000,'SillaCuero.jpg','2024-03-21 22:17:48','2024-03-21 22:17:48');
 /*!40000 ALTER TABLE `product` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -239,7 +186,7 @@ CREATE TABLE `user` (
   PRIMARY KEY (`id`),
   KEY `rol` (`rol`),
   CONSTRAINT `user_ibfk_1` FOREIGN KEY (`rol`) REFERENCES `roles` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -248,7 +195,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'santi','santi@mail.com','$2a$10$j943nL/7Eu4d/nl2JSioZubluQCJqSmvyQVHkLh7nXT2af9b4W0oq',2147483647,1,'2024-02-28 03:28:23','2024-02-28 03:28:23'),(2,'santi2','santi2@mail.com','$2a$10$U/HoV9cFXD9.T18LOnDMTOxWcQpL39XVjy6iX5N8a2ZPoGujNR3tK',2147483647,1,'2024-02-28 03:31:25','2024-02-28 03:31:25'),(3,'isaac','isaac@mail.com','$2a$10$aMMDYxIb0P0a7oXIICMZRuxddnEEnMuR4enCd6w4bekgDy8yBfVoO',2147483647,2,'2024-02-28 03:34:29','2024-02-28 03:34:29'),(4,'santi','terumatsu7@gmail.com','$2a$10$5/j1MB3jCwu.Y4W8QVr8N.lgaTNcIDCAG3g6CzzxWOxEXFLYmf7Hm',1234569856,1,'2024-03-11 01:58:38','2024-03-11 01:58:38'),(5,'santi','terumatsu7@gmail.com','$2a$10$kdk43HIcXrfpl7m9v4zgUulZ4TZbiddbQKl98mi7HhVhfwQ0a2/Le',1234569856,1,'2024-03-11 01:58:42','2024-03-11 01:58:42'),(6,'santi','terumatsu7@gmail.com','$2a$10$bgFfM92kIg9DY0.XL.eJs.cJx922szF67.oLg3c7lEpByywopWyne',1234569856,1,'2024-03-11 01:58:42','2024-03-11 01:58:42'),(7,'Manuela','manu@gmail.com','$2a$10$dwtw8OOKxUhaFJFB/14n5ufn8uVG7lydDc4exqJyrPPK87SUf.KfC',1234567890,1,'2024-03-11 02:25:55','2024-03-11 02:25:55'),(8,'sofi','sofi@mail.com','$2a$10$X93qsfmn2fXk6GoyUKvQLeuHpDp21l619mJTvkSfEK45ZbMTZLzm6',1234569856,1,'2024-03-11 03:42:12','2024-03-11 03:42:12'),(9,'Stevens','stevens@mail.com','$2a$10$m4rZpNsXYlS8cqkkSsL5x.NpfLL1YIqmGmfAMMTmW6g0shO9JVHPS',1236549865,1,'2024-03-11 05:26:29','2024-03-11 05:26:29'),(10,'Dani','dani@mail.com','$2a$10$SypLVyFDriA6Rh2t6.f.v.QX7YZOLetPJslJa5AMNh2kLMqZrP9g2',1235485245,1,'2024-03-18 07:25:48','2024-03-18 07:25:48');
+INSERT INTO `user` VALUES (1,'santi','santi@mail.com','$2a$10$j943nL/7Eu4d/nl2JSioZubluQCJqSmvyQVHkLh7nXT2af9b4W0oq',2147483647,1,'2024-02-28 03:28:23','2024-02-28 03:28:23'),(2,'santi2','santi2@mail.com','$2a$10$U/HoV9cFXD9.T18LOnDMTOxWcQpL39XVjy6iX5N8a2ZPoGujNR3tK',2147483647,1,'2024-02-28 03:31:25','2024-02-28 03:31:25'),(3,'isaac','isaac@mail.com','$2a$10$aMMDYxIb0P0a7oXIICMZRuxddnEEnMuR4enCd6w4bekgDy8yBfVoO',2147483647,2,'2024-02-28 03:34:29','2024-02-28 03:34:29'),(4,'santi','terumatsu7@gmail.com','$2a$10$5/j1MB3jCwu.Y4W8QVr8N.lgaTNcIDCAG3g6CzzxWOxEXFLYmf7Hm',1234569856,1,'2024-03-11 01:58:38','2024-03-11 01:58:38'),(5,'santi','terumatsu7@gmail.com','$2a$10$kdk43HIcXrfpl7m9v4zgUulZ4TZbiddbQKl98mi7HhVhfwQ0a2/Le',1234569856,1,'2024-03-11 01:58:42','2024-03-11 01:58:42'),(6,'santi','terumatsu7@gmail.com','$2a$10$bgFfM92kIg9DY0.XL.eJs.cJx922szF67.oLg3c7lEpByywopWyne',1234569856,1,'2024-03-11 01:58:42','2024-03-11 01:58:42'),(7,'Manuela','manu@gmail.com','$2a$10$dwtw8OOKxUhaFJFB/14n5ufn8uVG7lydDc4exqJyrPPK87SUf.KfC',1234567890,1,'2024-03-11 02:25:55','2024-03-11 02:25:55'),(8,'sofi','sofi@mail.com','$2a$10$X93qsfmn2fXk6GoyUKvQLeuHpDp21l619mJTvkSfEK45ZbMTZLzm6',1234569856,1,'2024-03-11 03:42:12','2024-03-11 03:42:12'),(9,'Stevens','stevens@mail.com','$2a$10$m4rZpNsXYlS8cqkkSsL5x.NpfLL1YIqmGmfAMMTmW6g0shO9JVHPS',1236549865,1,'2024-03-11 05:26:29','2024-03-11 05:26:29'),(10,'Dani','dani@mail.com','$2a$10$SypLVyFDriA6Rh2t6.f.v.QX7YZOLetPJslJa5AMNh2kLMqZrP9g2',1235485245,1,'2024-03-18 07:25:48','2024-03-18 07:25:48'),(11,'valencia','valencia@gmail.com','$2a$10$4wZo1.un34DpDAoVFFqVIOxjGeG/9Oe7.Fym4wtga8j/p5l8BXLQO',319281490,1,'2024-03-21 23:22:55','2024-03-21 23:22:55'),(12,'Admin','admin@mail.com','$2a$10$pFJ0lO5f7v.j5EHberoH3ORDhxsp/MVKNsa6aYVeNs5Um5GIQXQ1W',1235485245,2,'2024-04-02 07:57:09','2024-04-02 07:57:09'),(13,'Admin2','administrador@mail.com','$2a$10$KUvcxgojEkSVTbKScgJeQuKDdgRPp7fIGeH.LDJxBCfwrgJF9r6wW',1235485245,2,'2024-04-02 07:59:25','2024-04-02 07:59:25');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -261,4 +208,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-03-19  0:27:58
+-- Dump completed on 2024-04-02  9:55:13

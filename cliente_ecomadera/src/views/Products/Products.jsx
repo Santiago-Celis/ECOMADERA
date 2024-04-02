@@ -13,13 +13,13 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 import { Modal as BaseModal } from '@mui/base/Modal';
 import { styled, css } from '@mui/system';
-import  PropTypes  from 'prop-types';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import TextField from '@mui/material/TextField';
 import MenuItem from '@mui/material/MenuItem';
-import {FormControl} from '@mui/material';
-import {InputLabel} from '@mui/material';
-import {Select} from '@mui/material';
+import { FormControl } from '@mui/material';
+import { InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
 
 import axios from 'axios';
 
@@ -29,215 +29,244 @@ import Navbar from '../../components/Navbar/Navbar';
 import Footer from '../../components/Footer/Footer';
 import { CartContext } from '../../context/ShoppingCartContext';
 import { Azul } from '../../Colors';
-
+import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
 
 
 
 
 function Products() {
 
-  
-
-  const endPoint = 'http://localhost:3001/products/products';
-  const endPointCategory = 'http://localhost:3001/category/categories';
 
 
-  const [data, setData] = useState([]);
-  const [product, setProduct] = useState([]);
-  const [category, setCategory] = useState([]);
-  const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
-  const [seleccionCategoria, setSeleccionCategoria] = useState(parseInt(''))
-  
-  const getCategory = async () => {
-    try {
-      const category = await axios.get(`${endPointCategory}`);
-      setCategory(category.data)
-      console.log(category.data);
-    } catch (error) {
-      console.log(error);
+    const endPoint = 'http://localhost:3001/products/products';
+    const endPointCategory = 'http://localhost:3001/category/categories';
+
+
+    const [data, setData] = useState([]);
+    const [product, setProduct] = useState([]);
+    const [category, setCategory] = useState([]);
+    const [cart, setCart] = useState(JSON.parse(localStorage.getItem("cart")) || []);
+    const [seleccionCategoria, setSeleccionCategoria] = useState(parseInt(''))
+
+    const getCategory = async () => {
+        try {
+            const category = await axios.get(`${endPointCategory}`);
+            setCategory(category.data)
+            console.log(category.data);
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
-  useEffect(() => {
-    getCategory();
-  }, [])
-  
-  const getData = async () => {
-    try {
-      const response = await axios.get(endPoint, {
-        headers:
-        {'Authorization': 'Bearer '+ sessionStorage.getItem('token')}
-      });
-      setData(response.data)
-      
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
-  
-  
+    useEffect(() => {
+        getCategory();
+    }, [])
 
-  useEffect(() => {
-    getData();
-    localStorage.getItem("cart") === null ? setCart([]) : setCart(JSON.parse(localStorage.getItem("cart")))
-  }, [])
+    const getData = async () => {
+        try {
+            const response = await axios.get(endPoint, {
+                headers:
+                    { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') }
+            });
+            setData(response.data)
 
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    console.log(cart);
-  }, [cart])
-
-  /* const filtro = () => {
-    const [filterCategory, setFilterCategory] = useState('todos');
-
-    const handleCategoryChange = (e) => {
-      setFilterCategory(e.target.value);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
     };
 
-    const filterProducts = data.filter((product) => {
-      if(filterCategory ==='todos'){
-        return true;
-      }
-      return data.categoryId === filterCategory;
-    }) */
 
+
+    useEffect(() => {
+        getData();
+        localStorage.getItem("cart") === null ? setCart([]) : setCart(JSON.parse(localStorage.getItem("cart")))
+    }, [])
+
+
+    useEffect(() => {
+        localStorage.setItem("cart", JSON.stringify(cart));
+        console.log(cart);
+    }, [cart])
+
+    /* const filtro = () => {
+      const [filterCategory, setFilterCategory] = useState('todos');
   
+      const handleCategoryChange = (e) => {
+        setFilterCategory(e.target.value);
+      };
   
-  
+      const filterProducts = data.filter((product) => {
+        if(filterCategory ==='todos'){
+          return true;
+        }
+        return data.categoryId === filterCategory;
+      }) */
 
-  const addToCart = (product) => {
-    setCart((currItems) => {
-      
-      const isItemsFound = currItems.find((producto) => producto.id === product.id)
 
-      if (isItemsFound) {
-        return currItems.map((producto) => {
 
-          if (producto.id === product.id){
-            return { ...producto, quantity: parseInt( producto.quantity + 1 )}
-          }
-          return producto;
+
+
+    const addToCart = (product) => {
+        setCart((currItems) => {
+
+            const isItemsFound = currItems.find((producto) => producto.id === product.id)
+
+            if (isItemsFound) {
+                return currItems.map((producto) => {
+
+                    if (producto.id === product.id) {
+                        return { ...producto, quantity: parseInt(producto.quantity + 1) }
+                    }
+                    return producto;
+                });
+            } else {
+                return [...currItems, { quantity: 1, ...product }]
+            }
         });
-      } else {
-        return [...currItems, { quantity: 1, ...product }]
-      }
-    });
-    console.log('Agregando Producto');
-  };
 
-  
+        toast.success('Producto agregado Correctamente')
+        console.log('Agregando Producto');
+    };
 
-  const getQuantityById = (id) => {
-    return cart.find((product) => product.id === id)?.quantity || 0;
-  };
 
-  const quantityPerItem = getQuantityById(product.id);
 
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+    const getQuantityById = (id) => {
+        return cart.find((product) => product.id === id)?.quantity || 0;
+    };
 
-  function filtrarDatos(data) {
-    if(!seleccionCategoria || seleccionCategoria == 'todos'){
-        return data;
+    const quantityPerItem = getQuantityById(product.id);
+
+    const [open, setOpen] = React.useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+
+    function filtrarDatos(data) {
+        if (!seleccionCategoria || seleccionCategoria == 'todos') {
+            return data;
+        }
+
+        return data.filter(product => product.categoryId === seleccionCategoria)
     }
 
-    return data.filter(product => product.categoryId === seleccionCategoria)
-  }
+    const categoriasFiltradas = filtrarDatos(data)
 
-  const categoriasFiltradas = filtrarDatos(data)
+    return (
+        <>
 
-  return (
-    <>
-
-      <Navbar/>
+            <Navbar />
 
 
-          <FormControl sx={{ margin:'3em' }}>
-              <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
-              <Select
-                  labelId="demo-simple-select-label"
-                  id="demo-simple-select"
-                  value='todos'
-                  label="Categoria"
-                  onChange={(e) => setSeleccionCategoria(e.target.value)}
-              >
-                  <MenuItem value={'todos'}>Todos</MenuItem>
-                  {category.map((category, idx) => (
-                    <MenuItem  key={idx} value={category.id}>{category.name}</MenuItem>
-                  ))}
-              </Select>
-          </FormControl>
-      
-        
-        
-        <ul>
-        {category.map((category) => {
-            <li>
-            <Typography variant="body2" color="initial" sx={{ fontSize: '30em' }}>
-              {category.name}
-            </Typography>
-            </li>
-        })}
-        </ul>
-        
-  
-      <Grid container /* spacing={{ xs: 4, md: 0, }} */ columns={{ xs: 5, sm: 4 }} sx={{ gap: '2em' }}>
-        {categoriasFiltradas.map((product, idx) => (
-          <Grid  key={product.id}>
-            <Card key={idx} sx={{ width:'300px',  maxWidth:345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
-      <CardMedia
-        component="img"
-        alt="green iguana"
-        height="140"
-        image={`http://localhost:3001/image/${product.imagenURL}`}
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {product.name}
-        </Typography>
-        <Typography gutterBottom variant="body1" color="grey" component="div">
-          {product.description}
-        </Typography>
-        <Typography variant="h5" color={Azul[500]}>
-          Precio: ${product.price}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small" onClick={() => addToCart(product)} sx={{ width: '100%', height: 'auto', background:Azul[500], color:grey[800] }}>Añadir al carrito</Button>
-      </CardActions>
-    </Card>
-          </Grid>
-        ))}
-      </Grid>
+            <FormControl sx={{ margin: '3em' }}>
+                <InputLabel id="demo-simple-select-label">Categorias</InputLabel>
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value='todos'
+                    label="Categoria"
+                    onChange={(e) => setSeleccionCategoria(e.target.value)}
+                >
+                    <MenuItem value={'todos'}>Todos</MenuItem>
+                    {category.map((category, idx) => (
+                        <MenuItem key={idx} value={category.id}>{category.name}</MenuItem>
+                    ))}
+                </Select>
+            </FormControl>
 
 
-      
+
+            <ul>
+                {category.map((category) => {
+                    <li>
+                        <Typography variant="body2" color="initial" sx={{ fontSize: '30em' }}>
+                            {category.name}
+                        </Typography>
+                    </li>
+                })}
+            </ul>
 
 
-    
-    
-          <Footer/>
+            <Grid container /* spacing={{ xs: 4, md: 0, }} */ columns={{ xs: 5, sm: 4 }} sx={{ gap: '2em' }}>
+                {categoriasFiltradas.map((product, idx) => (
+                    <Grid key={product.id}>
+                        <Card key={idx} sx={{ width: '300px', maxWidth: 345, margin: '4em 20px', background: 'paper', height: 'fit-content', display: 'inline-block' }}>
+                            <CardMedia
+                                component="img"
+                                alt="green iguana"
+                                height="140"
+                                image={`http://localhost:3001/image/${product.imagenURL}`}
+                            />
+                            <CardContent>
+                                <Typography gutterBottom variant="h5" component="div">
+                                    {product.name}
+                                </Typography>
+                                <Typography gutterBottom variant="body1" color="grey" component="div">
+                                    {product.description}
+                                </Typography>
+                                <Typography variant="h5" color={Azul[500]}>
+                                    Precio: ${product.price}
+                                </Typography>
+                            </CardContent>
+                            <CardActions>
+                                <Button size="small" onClick={() => addToCart(product)} sx={{ width: '100%', height: 'auto', background: Azul[500], color: grey[800] }}>Añadir al carrito</Button>
+                            </CardActions>
+                        </Card>
+                    </Grid>
+                ))}
+            </Grid>
 
-    </>
-  )
+
+
+
+
+
+
+            <Footer />
+
+            <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toastOptions={{
+                    // Define default options
+                    className: '',
+                    duration: 5000,
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                    },
+
+                    // Default options for specific types
+                    success: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black',
+                        },
+                    },
+                }}
+            />
+
+        </>
+    )
 }
 
 const Backdrop = React.forwardRef((props, ref) => {
-  const { open, className, ...other } = props;
-  return (
-    <div
-      className={clsx({ 'base-Backdrop-open': open }, className)}
-      ref={ref}
-      {...other}
-    />
-  );
+    const { open, className, ...other } = props;
+    return (
+        <div
+            className={clsx({ 'base-Backdrop-open': open }, className)}
+            ref={ref}
+            {...other}
+        />
+    );
 });
 
 Backdrop.propTypes = {
-  className: PropTypes.string.isRequired,
-  open: PropTypes.bool,
+    className: PropTypes.string.isRequired,
+    open: PropTypes.bool,
 };
 
 const StyledBackdrop = styled(Backdrop)`
@@ -249,36 +278,36 @@ const StyledBackdrop = styled(Backdrop)`
 `;
 
 const blue = {
-  200: '#99CCFF',
-  300: '#66B2FF',
-  400: '#3399FF',
-  500: '#007FFF',
-  600: '#0072E5',
-  700: '#0066CC',
+    200: '#99CCFF',
+    300: '#66B2FF',
+    400: '#3399FF',
+    500: '#007FFF',
+    600: '#0072E5',
+    700: '#0066CC',
 };
 
 const grey = {
-  50: '#F3F6F9',
-  100: '#E5EAF2',
-  200: '#DAE2ED',
-  300: '#C7D0DD',
-  400: '#B0B8C4',
-  500: '#9DA8B7',
-  600: '#6B7A90',
-  700: '#434D5B',
-  800: '#303740',
-  900: '#1C2025',
+    50: '#F3F6F9',
+    100: '#E5EAF2',
+    200: '#DAE2ED',
+    300: '#C7D0DD',
+    400: '#B0B8C4',
+    500: '#9DA8B7',
+    600: '#6B7A90',
+    700: '#434D5B',
+    800: '#303740',
+    900: '#1C2025',
 };
 
 const red = {
-  100 : '#DC5A6D',
-  200: '#C93B50',
-  300: '#BB1A32',
-  400: '#B3001B'
+    100: '#DC5A6D',
+    200: '#C93B50',
+    300: '#BB1A32',
+    400: '#B3001B'
 }
 
 const TriggerButton = styled('button')(
-  ({ theme }) => css`
+    ({ theme }) => css`
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 600;
     font-size: 0.875rem;
@@ -318,7 +347,7 @@ const Modal = styled(BaseModal)`
 `;
 
 const ModalContent = styled('div')(
-  ({ theme }) => css`
+    ({ theme }) => css`
     font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 500;
     text-align: start;

@@ -13,8 +13,12 @@ import {TableRow} from '@mui/material';
 import {TableCell} from '@mui/material';
 import { usePDF } from 'react-to-pdf';
 
+
 import AppRegistrationOutlinedIcon from '@mui/icons-material/AppRegistrationOutlined';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import toast from 'react-hot-toast';
+import { Toaster } from 'react-hot-toast';
+import style from '../ProductList/Lista.module.css'
 
 function ListaCategoria() {
     const [category, setCategory] = useState([]);
@@ -35,6 +39,22 @@ function ListaCategoria() {
     }, [])
 
     console.log(category);
+
+    const deleteCategoria = (id) => {
+      try {
+        const response = axios.delete(`http://localhost:3001/category/deleteCategory/${id}`, {
+          headers:
+                    { 'Authorization': 'Bearer ' + sessionStorage.getItem('token') } 
+        });
+        toast.success('La categoria se ha eliminado con exito')
+        document.location.reload();
+        
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
 
     const tableRef = useRef(null);
     const {toPDF, targetRef} = usePDF({filename: 'Categorias.pdf'})
@@ -57,6 +77,7 @@ function ListaCategoria() {
         <Table stickyHeader aria-label="sticky table" ref={tableRef}>
           <TableHead>
             <TableRow>
+              <TableCell>ID</TableCell>
               <TableCell>Name</TableCell>
               <TableCell>Acciones</TableCell>
             </TableRow>
@@ -67,14 +88,42 @@ function ListaCategoria() {
                 key={row.id}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
+                <TableCell>{row.id}</TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell><AppRegistrationOutlinedIcon/><DeleteOutlineOutlinedIcon/></TableCell>
+                <TableCell><AppRegistrationOutlinedIcon/><DeleteOutlineOutlinedIcon onClick={() => deleteCategoria(row.id)} className={style.Borrar} /></TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
     </Paper>
+
+    <Toaster
+                position="top-center"
+                reverseOrder={false}
+                gutter={8}
+                containerClassName=""
+                containerStyle={{}}
+                toastOptions={{
+                    // Define default options
+                    className: '',
+                    duration: 5000,
+                    style: {
+                        background: '#363636',
+                        color: '#fff',
+                    },
+
+                    // Default options for specific types
+                    success: {
+                        duration: 3000,
+                        theme: {
+                            primary: 'green',
+                            secondary: 'black',
+                        },
+                    },
+                }}
+            />
+
     </div>
     
   )
